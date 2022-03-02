@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import firebase from './firebase';
+import 'firebase/compat/firestore';
+import 'firebase/compat/auth';
+
+import Portal from './pages/Portal';
+import SignIn from './pages/SignIn';
 import './App.css';
 
+
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
+
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+
+
+
+
+
+
+const auth = firebase.auth();
+
+
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [user] = useAuthState(auth);
+
+    return (
+        <div className="App">
+            {user ? <Portal /> : <SignIn />}
+        </div>
+    );
 }
 
 export default App;

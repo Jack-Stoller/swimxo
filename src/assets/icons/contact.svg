@@ -1,0 +1,35 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    fillRule="evenodd"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeMiterlimit="1.5"
+    clipRule="evenodd"
+    viewBox="0 0 512 512"
+>
+    <path
+    fill="none"
+    stroke="#000"
+    strokeWidth="6.62"
+    d="M446 257.386C446 199.774 361.984 153 258.5 153S71 199.774 71 257.386c0 22.543 13.109 44.481 37.366 62.532L91.467 379l97.986-24.564c21.979 4.847 45.406 7.336 69.047 7.336 103.484 0 187.5-46.774 187.5-104.386z"
+    transform="matrix(1.17067 0 0 1.78509 -46.617 -218.834)"
+    ></path>
+    <circle
+    cx="174.5"
+    cy="226.5"
+    r="9.5"
+    transform="translate(-99.526 -116.632) scale(1.57895)"
+    ></circle>
+    <circle
+    cx="174.5"
+    cy="226.5"
+    r="9.5"
+    transform="translate(-19.526 -116.632) scale(1.57895)"
+    ></circle>
+    <circle
+    cx="174.5"
+    cy="226.5"
+    r="9.5"
+    transform="translate(60.474 -116.632) scale(1.57895)"
+    ></circle>
+</svg>

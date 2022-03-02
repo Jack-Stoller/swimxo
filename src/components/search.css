@@ -1,0 +1,54 @@
+.search-input {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 16px 0px;
+
+    white-space: nowrap;
+}
+
+.search-input input {
+    display: inline;
+    vertical-align: middle;
+
+    box-sizing: border-box;
+    width: 100%;
+
+    padding:12px 32px;
+
+    border-radius: 15px;
+    border: 0px;
+    background-color: white;
+    font-family: inherit;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+
+    outline: 0px solid transparent;
+
+    will-change: outline;
+
+    transition: outline 0.2s;
+}
+
+
+.search-input input:focus {
+    outline: 5px solid rgba(63, 0, 255, 0.25);
+}
+
+.search-input button {
+    display: inline;
+    vertical-align: middle;
+    width: 64px;
+    height: 64px;
+
+    margin-left: -64px;
+
+    padding: 0px;
+}
+
+.search-input button > svg {
+    margin: 0px;
+}
+
+.search-input button > svg *:is(path, circle)  {
+    stroke: white;
+    stroke-width: 30px;
+}

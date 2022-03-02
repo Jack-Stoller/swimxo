@@ -1,0 +1,10 @@
+.result {
+    display: grid;
+    grid-template-columns: 40% 60%;
+    align-items: center;
+}
+
+.result .name {
+    font-size: 24px;
+    font-weight: bold;
+}

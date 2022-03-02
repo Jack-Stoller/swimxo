@@ -1,0 +1,16 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    fillRule="evenodd"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeMiterlimit="1.5"
+    clipRule="evenodd"
+    viewBox="0 0 512 512"
+>
+    <path
+    fill="none"
+    strokeWidth="15"
+    d="M88 300L279 96l191 204"
+    transform="rotate(90 238.5 215.5)"
+    ></path>
+</svg>

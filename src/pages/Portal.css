@@ -1,0 +1,22 @@
+section.app {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+
+    width: 100vw;
+    height: 100vh;
+}
+
+section.content {
+    margin: 64px auto;
+    width: 75%;
+    max-width: 800px;
+}
+
+h1 {
+    font-size: 4.5em;
+    margin: 0.2em 0;
+}
+
+h3 {
+    color: grey;
+}

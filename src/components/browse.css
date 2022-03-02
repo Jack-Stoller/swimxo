@@ -1,0 +1,18 @@
+.results-header {
+    display: grid;
+    grid-template-columns: 1fr 64px;
+
+    align-items: center;
+}
+
+.add-btn {
+    box-sizing: border-box;
+    width: 64px;
+    height: 64px;
+
+    padding: 0px;
+
+    font-size: 24px;
+
+    font-weight: 200;
+}

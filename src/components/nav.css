@@ -1,0 +1,39 @@
+nav {
+    height: 100%;
+    width: 100%;
+
+    background-color: white;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.15);
+}
+
+nav ul {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+
+    padding: 0px;
+    margin: 0px;
+
+    height: 100%;
+}
+
+nav ul li {
+    list-style: none;
+    margin: 16px 32px;
+
+    white-space: nowrap;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+
+svg {
+    display: inline;
+    width: 20px;
+    height: 20px;
+    margin-right: 16px;
+    vertical-align: middle;
+}
