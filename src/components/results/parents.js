@@ -6,7 +6,7 @@ class ParentResult extends Component {
 
     render() {
         return (
-            <SectionLink>
+            <SectionLink onClick={(e) => {if (this.props.onClick) this.props.onClick(e)}}>
                 <div className="result">
                     <div className="name">{this.props.data.name ?? '??'}</div>
                     <div className="stats">

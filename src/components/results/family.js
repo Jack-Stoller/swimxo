@@ -12,7 +12,7 @@ class FamilyResult extends Component {
         else owes = '$' + owes;
 
         return (
-            <SectionLink>
+            <SectionLink onClick={(e) => {if (this.props.onClick) this.props.onClick(e)}}>
                 <div className="result">
                     <div className="name">{this.props.data.lastname ?? '??'}</div>
                     <div className="stats">

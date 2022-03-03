@@ -6,8 +6,15 @@ section.app {
     height: 100vh;
 }
 
+section.content-scroll-wrapper {
+    overflow-y: overlay;
+}
+
 section.content {
+    position: relative;
+
     margin: 64px auto;
+
     width: 75%;
     max-width: 800px;
 }

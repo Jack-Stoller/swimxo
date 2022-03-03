@@ -15,10 +15,21 @@ button {
     box-shadow: 0px 0px 20px #4000ff96;
     border-radius: 15px;
     font-size: 14px;
+
+    transition: background-color 0.2s;
 }
 
 button.secondary {
     background-color: #eceaf0;
     box-shadow: 0px 0px 0px transparent;
     color: black;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #3500d3;
+}
+
+button.secondary:hover {
+    background-color: #d7d3df;
 }

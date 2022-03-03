@@ -1,9 +1,13 @@
 import firebase from 'firebase/compat/app';
+import { doc } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 import './addDoc.css';
 
 import Form from './forms/form';
 
 const AddDoc = (props) => {
+
+    const nav = useNavigate();
 
     const handleSubmit = async(e) => {
         e.preventDefault();
@@ -13,20 +17,28 @@ const AddDoc = (props) => {
         const auth = await firebase.auth();
         const { uid } = auth.currentUser;
 
-        const data = getFormData(e);
+        const [data, refUpdates] = getFormData(e, firestore);
 
-        ref.add({
+        await ref.add({
             ...data,
             created: {
                 time: firebase.firestore.FieldValue.serverTimestamp(),
                 by: uid
             }
+        }).then((ref) => {
+
+            refUpdates.foreach(u => {
+                u.doc
+            });
+
+            nav(`/${props.singleName}/${ref.id}`);
         });
     }
 
-    const getFormData = (formEvent) => {
+    const getFormData = (formEvent, db) => {
         const els = formEvent.target.querySelectorAll('*[name]');
         let data = {};
+        let refUpdates = [];
 
         for (let i = 0; i < els.length; i++) {
             const n = els[i].getAttribute('name');
@@ -42,6 +54,14 @@ const AddDoc = (props) => {
                     data[n] = new Date(els[i].value);
                     break;
 
+                case 'reference':
+                    data[n] = db.doc(els[i].value);
+                    
+                    let r = els[i].getAttribute('data-ref-array');
+                    if (r) refUpdates.push({prop: r, doc: data[n]})
+
+                    break;
+
                 case 'bool':
                     data[n] = String(els[i].value).toLowerCase() === 'true'
                     break;
@@ -52,12 +72,12 @@ const AddDoc = (props) => {
             }
         }
 
-        return data;
+        return [data, refUpdates];
     }
 
     return (
         <>
-            <h1>Add a {props.single_name}</h1>
+            <h1>Add a {props.singleName}</h1>
 
             <Form formType={props.form} onSubmit={handleSubmit} actionText="Add"/>
         </>

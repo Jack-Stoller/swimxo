@@ -14,7 +14,9 @@ class SectionLink extends Component {
                 </section>
             </Link>
             :
-            <section className="section-link">
+            <section className="section-link" onClick={() => {
+                if (this.props.onClick) this.props.onClick();
+            }}>
                 <div>{this.props.children}</div>
                 <ArrowIcon />
             </section>

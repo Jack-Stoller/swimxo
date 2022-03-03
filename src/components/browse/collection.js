@@ -30,7 +30,7 @@ const BrowseCollection = (props) => {
 
             <div className="results">
                 {data && data.map(dat => <props.component data={dat} key={dat.id} onClick={() => {
-                    if (props.onSelect) props.onSelect(dat.id);
+                    if (props.onSelect) props.onSelect(dat.id, dat);
                 }} />)}
             </div>
         </>
