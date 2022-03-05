@@ -5,11 +5,20 @@ import './results.css';
 class FamilyResult extends Component {
     render() {
 
-        let owes = (Math.round(this.props.data.payments?.map(p => p.amount).reduce((a, b) => a + b, 0) * 100) / 100).toFixed(2);
 
-        if (owes === 'NaN') owes = '$0';
-        else if (owes.startsWith('-')) owes = '-$' + owes.substring(1, owes.length)
-        else owes = '$' + owes;
+
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+
+            // These options are needed to round to whole numbers if that's what you want.
+            //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+            //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+        });
+
+        let owes = formatter.format(this.props.data.payments?.map(p => p.amount).reduce((a, b) => a + b, 0));
+
+        if (owes === '$NaN') owes = '$0';
 
         return (
             <SectionLink onClick={(e) => {if (this.props.onClick) this.props.onClick(e)}}>

@@ -1,15 +1,31 @@
 import firebase from 'firebase/compat/app';
+import { useEffect, useState } from 'react';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 import { Link } from 'react-router-dom';
+import { idConverter } from '../../utils/firestore';
+import Search from '../search';
 import Loading from './../loading';
+
+import './collection.css';
 
 const firestore = firebase.firestore();
 
 
 const BrowseCollection = (props) => {
+
     const ref = firestore.collection(props.name).withConverter(idConverter);
-    const query = ref.orderBy(props.orderBy).limit(250);
+    const query = ref.where('deleted', '!=', true).orderBy('deleted').limit(500);
     const [data, loading] = useCollectionData(query);
+
+    const [searchStr, setSearchStr] = useState('');
+
+    const [filteredData, setFilteredData] = useState([]);
+
+    useEffect(() => {
+        setFilteredData((data ?? []).filter(d => d[props.searchableField].toLowerCase().includes(searchStr)));
+    }, [data, searchStr]);
+
+
 
     return (
         (loading) ?
@@ -17,39 +33,33 @@ const BrowseCollection = (props) => {
         :
         <>
             <header className="results-header">
-                <h3>Showing {data && data.length} {props.name ?? ''}</h3>
                 {
-                    (props.addUrl) ?
-                    <Link to={props.addUrl}>
-                        <button className="add-btn">+</button>
-                    </Link>
-                    :
+                    (props.search && !props.search) ?
                     <></>
+                    :
+                    <Search value={searchStr} placeholder={'Search ' + (props.name ?? '') + '...'} onSearch={(e, s) => {e.preventDefault(); setSearchStr(s)}} />
                 }
+
+                <div className="results-and-add-btn">
+                    <h3>Showing {filteredData && filteredData.length} {props.name ?? ''} {(searchStr !== '') ? `that have "${searchStr}" it their ${props.searchableField}.` : '' }</h3>
+                    {
+                        (props.addUrl) ?
+                        <Link to={props.addUrl}>
+                            <button className="icon">+</button>
+                        </Link>
+                        :
+                        <></>
+                    }
+                </div>
             </header>
 
             <div className="results">
-                {data && data.map(dat => <props.component data={dat} key={dat.id} onClick={() => {
+                {filteredData && filteredData.map(dat => <props.component data={dat} key={dat.id} onClick={() => {
                     if (props.onSelect) props.onSelect(dat.id, dat);
                 }} />)}
             </div>
         </>
     );
 }
-
-
-const idConverter = {
-    toFirestore: (data) => {
-        delete data.id;
-        return data;
-    },
-    fromFirestore: (snapshot, options) => {
-        const data = snapshot.data(options);
-        return {
-            id: snapshot.id,
-            ...data
-        };
-    },
-};
 
 export default BrowseCollection;

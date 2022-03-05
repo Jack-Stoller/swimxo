@@ -1,0 +1,6 @@
+.results-and-add-btn {
+    display: grid;
+    grid-template-columns: 1fr 64px;
+
+    align-items: center;
+}

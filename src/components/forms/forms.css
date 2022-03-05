@@ -4,7 +4,7 @@ form > .input-sized {
     margin: 12px 0px;
 }
 
-form > *:is(input, textarea, select) {
+form > *:is(input, textarea, select), .form-input {
     display: inline-block;
     vertical-align: middle;
 
@@ -32,9 +32,14 @@ form > *:is(input, textarea, select) {
 }
 
 
-form > *:is(input, textarea, select):focus {
+form > *:is(input, textarea, select):focus, .form-input:focus {
     outline: 5px solid rgba(63, 0, 255, 0.25);
 }
+
+form > *:is(input, textarea, select).error, .form-input.error {
+    background-color: rgb(255, 227, 227);
+}
+
 
 form > label {
     display: inline-block;

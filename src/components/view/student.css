@@ -1,0 +1,14 @@
+.parent-contact {
+    font-size: 20px;
+}
+
+.parent-contact > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    margin: 12px 0px;
+}
+
+.parent-contact .method {
+    font-weight: bold;
+}

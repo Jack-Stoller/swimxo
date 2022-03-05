@@ -13,11 +13,10 @@ import { Route, Routes, useNavigate } from 'react-router-dom';
 const Browse = () => {
 
     const nav = useNavigate();
-    
+
     return (
         <section>
             <h1>Search</h1>
-            <Search />
             <Routes>
                 <Route path={`/`} element={<BrowseOptions />} />
 
@@ -26,7 +25,8 @@ const Browse = () => {
                         name="families"
                         component={FamilyResult}
                         addUrl="/add/family"
-                        orderBy="lastname"
+                        orderByField="lastname"
+                        searchableField="lastname"
                         onSelect={(id) => { nav('/family/' + id) }}
                     />
                 } />
@@ -35,7 +35,8 @@ const Browse = () => {
                         name="students"
                         component={StudentResult}
                         addUrl="/add/student"
-                        orderBy="name"
+                        orderByField="name"
+                        searchableField="name"
                         onSelect={(id) => { nav('/student/' + id) }}
                     />
                 } />
@@ -44,7 +45,8 @@ const Browse = () => {
                         name="parents"
                         component={ParentResult}
                         addUrl="/add/parent"
-                        orderBy="name"
+                        orderByField="name"
+                        searchableField="name"
                         onSelect={(id) => { nav('/parent/' + id) }}
                     />
                 } />
@@ -53,7 +55,8 @@ const Browse = () => {
                         name="classes"
                         component={ClassResult}
                         addUrl="/add/class"
-                        orderBy="name"
+                        orderByField="name"
+                        searchableField="name"
                         onSelect={(id) => { nav('/class/' + id) }}
                     />
                 } />
@@ -80,6 +83,7 @@ class BrowseOptions extends Component {
     render() {
         return (
             <>
+                <Search placeholder="Search Everywhere..." />
                 <h3>Or view all...</h3>
                 <SectionLink to="/browse/families">Families</SectionLink>
                 <SectionLink to="/browse/students">Students</SectionLink>

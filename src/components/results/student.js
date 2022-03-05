@@ -8,9 +8,11 @@ class StudentResult extends Component {
         let ageDate = new Date(ageDifMs); // miliseconds from epoch
         let age = Math.abs(ageDate.getUTCFullYear() - 1970);
 
-        let latestClass = this.props.data.history.reduce((a, b) =>
+        let latestClass = (this.props.data.history) ? this.props.data.history.reduce((a, b) =>
             a.date.seconds < b.date.seconds ? a : b
-        ).name;
+        ).name
+        :
+        'no class yet';
 
         return (
             <SectionLink onClick={(e) => {if (this.props.onClick) this.props.onClick(e)}}>

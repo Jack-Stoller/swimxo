@@ -1,0 +1,38 @@
+
+.view-header {
+    display: grid;
+    grid-template-columns: 1fr 64px;
+
+    gap: 32px;
+}
+
+.view-header .actions button {
+    margin: 8px 0px;
+}
+
+h2.view-section-heading {
+    font-size: 48px;
+    margin: 48px 0px 16px 0px;
+    color: grey;
+}
+
+h3.view-section-heading {
+    font-size: 28px;
+    margin: 16px 0px;
+    color: grey;
+}
+
+.view-table {
+    font-size: 20px;
+}
+
+.view-table > div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    margin: 12px 0px;
+}
+
+.view-table .name {
+    font-weight: bold;
+}

@@ -8,13 +8,13 @@ import './App.css';
 
 
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
+import TimeAgo from 'javascript-time-ago'
 
+import en from 'javascript-time-ago/locale/en.json'
 
+TimeAgo.addDefaultLocale(en)
 
 
 

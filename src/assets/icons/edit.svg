@@ -1,0 +1,24 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    fillRule="evenodd"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeMiterlimit="1.5"
+    clipRule="evenodd"
+    viewBox="0 0 512 512"
+>
+    <path
+    fill="none"
+    stroke="#fff"
+    strokeWidth="23.35"
+    d="M196 108.639h-81V451l40.5 54 40.5-54V108.639z"
+    transform="rotate(45 193.17 348.994) scale(1.10197 1.03832)"
+    ></path>
+    <path
+    fill="none"
+    stroke="#fff"
+    strokeWidth="31.55"
+    d="M115 42H196V451H115z"
+    transform="rotate(45 222.17 362.374) scale(1.10197 .20317)"
+    ></path>
+</svg>

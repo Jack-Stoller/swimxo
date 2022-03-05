@@ -1,20 +1,21 @@
-import React, { Component } from 'react';
+import { useState } from 'react';
 import { ReactComponent as BrowseIcon } from './../assets/icons/browse.svg';
 import './search.css';
 
-class Search extends Component {
-    render() {
-        return (
-            <form>
-                <div className="search-input">
-                    <input placeholder='Search everywhere...'/>
-                    <button>
-                        <BrowseIcon />
-                    </button>
-                </div>
-            </form>
-        );
-    }
+const Search = (props) => {
+
+    const [val, setVal] = useState(props.value ?? '');
+
+    return (
+        <form onSubmit={(e) => {if (props.onSearch) props.onSearch(e, val);}}>
+            <div className="search-input">
+                <input type="search" placeholder={props.placeholder ?? 'Search...'} value={val} onChange={(e) => {setVal(e.target.value)}} />
+                <button>
+                    <BrowseIcon />
+                </button>
+            </div>
+        </form>
+    );
 }
 
 export default Search;

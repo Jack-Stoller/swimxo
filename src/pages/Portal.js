@@ -5,10 +5,14 @@ import {
 } from "react-router-dom";
 import AddDoc from "../components/addDoc";
 import Browse from '../components/browse';
+import EditDoc from "../components/editDoc";
 import ClassForm from "../components/forms/class";
 import FamilyForm from "../components/forms/family";
 import ParentForm from "../components/forms/parent";
 import StudentForm from "../components/forms/student";
+import ClassView from "../components/view/class";
+import ParentView from "../components/view/parent";
+import StudentView from "../components/view/student";
 import Nav from './../components/nav';
 
 import './Portal.css'
@@ -53,6 +57,56 @@ function Portal() {
                                     sys_name="students"
                                     form={StudentForm}
                                 />
+                            } />
+
+
+                            <Route path="/class/:id/edit" element={
+                                <EditDoc
+                                    nameKey="name"
+                                    singleName="class"
+                                    sys_name="classes"
+                                    form={ClassForm}
+                                />
+                            } />
+                            <Route path="/add/family" element={
+                                <AddDoc
+                                    singleName="family"
+                                    sys_name="families"
+                                    form={FamilyForm}
+                                />
+                            } />
+                            <Route path="/parent/:id/edit" element={
+                                <EditDoc
+                                    nameKey="name"
+                                    singleName="parent"
+                                    sys_name="parents"
+                                    form={ParentForm}
+                                />
+                            } />
+                            <Route path="/student/:id/edit" element={
+                                <EditDoc
+                                    nameKey="name"
+                                    singleName="student"
+                                    sys_name="students"
+                                    form={StudentForm}
+                                />
+                            } />
+
+                            <Route path="/class/:id" element={
+                                <ClassView />
+                            } />
+                            <Route path="/family/:id" element={
+                                <AddDoc
+                                    singleName="family"
+                                    sys_name="families"
+                                    form={FamilyForm}
+                                />
+                            } />
+                            <Route path="/parent/:id" element={
+                                <ParentView />
+                            } />
+                            <Route path="/student/:id" element={
+                                <StudentView />
                             } />
 
                             <Route path="/" element={<h1>Overview</h1>}></Route>

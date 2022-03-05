@@ -1,0 +1,17 @@
+.skills {
+    margin: 12px 0px;
+}
+
+.skill {
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 16px;
+    align-items: start;
+    justify-items: end;
+
+    margin: 32px 0px;
+}
+
+.skill :is(input, textarea) {
+    margin: 0px;
+}

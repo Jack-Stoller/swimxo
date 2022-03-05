@@ -1,0 +1,38 @@
+.class-skills {
+    margin: 0px;
+    padding: 0px;
+}
+
+.class-skills .class-skill {
+    margin: 32px 0px;
+}
+
+.class-skills .class-skill h2 {
+    margin: 0px;
+}
+
+.class-skills .class-skill h4 {
+    margin: 0px;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+.class-skills .class-skill div {
+    line-height: 1.5;
+}
+
+.class-times button {
+    width: 100%;
+}
+
+.class-time {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 32px 0px;
+}
+
+.class-time .name {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0px;
+}

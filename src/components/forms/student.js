@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDocumentDataOnce } from 'react-firebase-hooks/firestore';
 import SwitchSelector from "react-switch-selector";
 import BrowseCollection from '../browse/collection';
 import Popup from '../popup';
@@ -7,12 +8,24 @@ import FamilyResult from './../results/family';
 
 import './forms.css';
 
-const StudentForm = () => {
+const StudentForm = (props) => {
 
-    const [exact_birthday, set_exact_birthday] = useState(true);
+    const [defaultFamilySnap] = useDocumentDataOnce(props.data?.family ?? null);
+    const [exactBirthday, setExactBirthday] = useState(props.data?.exact_birthday ?? true);
 
     const [pickingFamily, setPickingFamily] = useState(false);
     const [family, setFamily] = useState(null);
+
+
+    useEffect(() => {
+        if (defaultFamilySnap)
+            setFamily({
+                ...defaultFamilySnap,
+                id: props.data?.family.id
+            });
+
+    }, [defaultFamilySnap, props])
+
 
     const pickFamily = (data) => {
         setFamily(data);
@@ -46,9 +59,6 @@ const StudentForm = () => {
 
 
             {
-                /*
-                */
-               
                (pickingFamily) ?
                <Popup onClose={() => {setPickingFamily(false)}}>
                     <h2>Pick a family</h2>
@@ -56,7 +66,8 @@ const StudentForm = () => {
                         name="families"
                         component={FamilyResult}
                         addUrl="/add/family"
-                        orderBy="lastname"
+                        orderByField="lastname"
+                        searchableField="lastname"
                         onSelect={(_, data) => { pickFamily(data); }}
                     />
                 </Popup>
@@ -65,10 +76,10 @@ const StudentForm = () => {
             }
 
             <label htmlFor="name">Name</label>
-            <input type="text" name="name" placeholder="Name" required />
+            <input type="text" name="name" defaultValue={props.data?.name ?? ''} placeholder="Name" required />
 
             <label htmlFor="birthday">Birthday</label>
-            <input type="date" name="birthday" required />
+            <input type="date" name="birthday" defaultValue={(props.data?.birthday?.toDate()) ? `${props.data?.birthday?.toDate().getFullYear()}-${props.data?.birthday?.toDate().getMonth() + 1}-${props.data?.birthday?.toDate().getDate()}` : ''} required />
             <div className="input-sized">
                 <SwitchSelector
                     options={[
@@ -81,11 +92,12 @@ const StudentForm = () => {
                             value: false
                         }
                     ]}
-                    onChange={set_exact_birthday}
+                    initialSelectedIndex={[true, false].indexOf(props.data?.exact_birthday ?? 0)}
+                    onChange={setExactBirthday}
                     backgroundColor="#eceaf0"
                     selectedBackgroundColor="#3F00FF"
                 />
-                <input type="hidden" data-type="bool" name="exact_birthday" value={exact_birthday} />
+                <input type="hidden" data-type="bool" name="exact_birthday" value={exactBirthday} />
             </div>
         </>
     );

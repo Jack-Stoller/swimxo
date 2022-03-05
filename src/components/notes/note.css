@@ -1,0 +1,17 @@
+.note {
+    margin: 16px 0;
+}
+
+.note .header {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    margin-bottom: 16px;
+
+    color: grey;
+}
+
+.note .header .date {
+    text-align: end;
+}
