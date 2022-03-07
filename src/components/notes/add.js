@@ -16,7 +16,7 @@ const NoteAdd = (props) => {
     return (
         <div className="note-add">
             <form onSubmit={submit}>
-                <textarea className="add-note-input" rows="4" placeholder="Note content..." value={body} onChange={(e) => setBody(e.target.value)}></textarea>
+                <textarea className="add-note-input" rows="4" placeholder="Note content..." value={body} onChange={(e) => setBody(e.target.value)} required></textarea>
                 <button className="add-note-btn">Add</button>
             </form>
         </div>

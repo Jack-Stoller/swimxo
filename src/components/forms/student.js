@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDocumentDataOnce } from 'react-firebase-hooks/firestore';
 import SwitchSelector from "react-switch-selector";
+import { idConverter } from '../../utils/firestore';
 import BrowseCollection from '../browse/collection';
 import Popup from '../popup';
 import SectionLink from '../sectionLink';
@@ -10,7 +11,7 @@ import './forms.css';
 
 const StudentForm = (props) => {
 
-    const [defaultFamilySnap] = useDocumentDataOnce(props.data?.family ?? null);
+    const [defaultFamilySnap] = useDocumentDataOnce(props.data?.family.withConverter(idConverter) ?? null);
     const [exactBirthday, setExactBirthday] = useState(props.data?.exact_birthday ?? true);
 
     const [pickingFamily, setPickingFamily] = useState(false);
@@ -18,12 +19,7 @@ const StudentForm = (props) => {
 
 
     useEffect(() => {
-        if (defaultFamilySnap)
-            setFamily({
-                ...defaultFamilySnap,
-                id: props.data?.family.id
-            });
-
+        setFamily(defaultFamilySnap);
     }, [defaultFamilySnap, props])
 
 

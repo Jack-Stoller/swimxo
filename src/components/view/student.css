@@ -1,14 +1,28 @@
-.parent-contact {
-    font-size: 20px;
+.student-history .event {
+    display: grid;
+
+    grid-template-columns: 30% 70%;
+
+    align-items: center;
+
+    margin: 16px 0px;
 }
 
-.parent-contact > div {
+.student-history .action {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.student-history .action::first-letter {
+    text-transform: capitalize;
+}
+
+.student-history .info header {
     display: grid;
     grid-template-columns: 1fr 1fr;
-
-    margin: 12px 0px;
+    color: grey;
 }
 
-.parent-contact .method {
-    font-weight: bold;
+.student-history .info header .class {
+    text-align: end;
 }

@@ -12,6 +12,7 @@ import Popup from '../popup';
 import { useEffect, useState } from 'react';
 import Note from '../notes/note';
 import NoteAdd from '../notes/add';
+import { idConverter } from '../../utils/firestore';
 
 const ParentView = (props) => {
 
@@ -26,7 +27,7 @@ const ParentView = (props) => {
     );
 
     const [fData, fLoading] = useDocumentData(
-        (data && data.family) ? data.family : null
+        (data && data.family) ? data.family.withConverter(idConverter) : null
     )
 
     const deleteParent = () => {
@@ -136,7 +137,7 @@ const ParentView = (props) => {
             </div>
 
 
-            <h2 className="view-section-heading">Family {(fData && fData.lastname) ? `(${fData && (fData.lastname ?? '')})` : ''}</h2>
+            <h2 className="view-section-heading">Family {(fData && fData.lastname) ? <Link to={'/family/' + fData.id}>{fData.lastname}</Link> : ''}</h2>
             {
                 (data && !('family' in data)) ?
                 <div>No Family</div>

@@ -12,6 +12,10 @@ import Popup from '../popup';
 import { useEffect, useState } from 'react';
 import Note from '../notes/note';
 import NoteAdd from '../notes/add';
+import { idConverter } from '../../utils/firestore';
+import TimeAgo from 'javascript-time-ago';
+import ReactTimeAgo from 'react-time-ago';
+import AddEventForm from '../forms/addEvent';
 
 const StudentView = (props) => {
 
@@ -26,14 +30,18 @@ const StudentView = (props) => {
     );
 
     const [fData, fLoading] = useDocumentData(
-        (data && data.family) ? data.family : null
+        (data && data.family) ? data.family.withConverter(idConverter) : null
     )
+
+    const [showingAddHistory, setShowingAddHistory] = useState(false);
+
 
     const [age, setAge] = useState(null);
     const [brithday, setBrithday] = useState(null);
+    const [curClass, setCurClass] = useState('');
+    const [historyClasses, setHistoryClasses] = useState([]);
 
     useEffect(() => {
-
         if (!data) return;
 
         let exactPrefix = (data.exact_birthday) ? '' : '~';
@@ -49,6 +57,40 @@ const StudentView = (props) => {
 
         setBrithday(`${exactPrefix}${mon[birthday?.getMonth() ?? 12]} ${birthday?.getDate()} ${birthday?.getFullYear()}`);
 
+        setCurClass(
+            (data.history) ? data.history.reduce((a, b) =>
+                a.date.seconds < b.date.seconds ? a : b
+            ).name
+            :
+            'no class yet'
+        );
+
+        let classes = [];
+
+        if (data.history) {
+
+            for (let i = 0; i < data.history.length; i++) {
+                if (!(data?.history?.[i])) continue;
+
+                console.log(data.history[i].class.parent, data.history[i].class.id);
+
+                firebase.firestore()
+                    .collection(data.history[i].class.parent.id)
+                    .doc(data.history[i].class.id)
+                    .onSnapshot(snap => {
+                    historyClasses.splice(i, 1, {
+                        ...snap.data(),
+                        id: snap.id
+                    });
+
+                    setHistoryClasses([...historyClasses]);
+                });
+
+                classes.push({});
+            }
+
+            setHistoryClasses(classes);
+        }
     }, [data]);
 
     const deleteStudent = () => {
@@ -62,6 +104,7 @@ const StudentView = (props) => {
     }
 
     const newNote = async(body) => {
+        if (!body || body == '') return;
         const auth = await firebase.auth();
 
         firebase.firestore().doc('/students/' + (props.id ?? id)).update({
@@ -72,7 +115,12 @@ const StudentView = (props) => {
                 user_id: auth.currentUser.uid
             })
         });
+    }
 
+    const addEvent = async(e) => {
+        e.preventDefault();
+
+        
     }
 
 
@@ -118,7 +166,7 @@ const StudentView = (props) => {
             <div className="view-table">
                 <div>
                     <div className="name">Family</div>
-                    <div className="value">{(data && !('family' in data)) ? 'None' : (fData && (fData.lastname ?? ''))}</div>
+                    <div className="value">{(data && !('family' in data)) ? 'None' : (fData && fData.lastname) ? <Link to={'/family/' + fData.id}>{fData.lastname}</Link> : ''}</div>
                 </div>
                 <div>
                     <div className="name">Brithday</div>
@@ -128,8 +176,49 @@ const StudentView = (props) => {
                     <div className="name">Age</div>
                     <div className="value">{age ?? '?'} years old</div>
                 </div>
+                <div>
+                    <div className="name">Class</div>
+                    <div className="value">in {curClass ?? ''}</div>
+                </div>
             </div>
 
+            {
+                (showingAddHistory) ?
+                    <Popup onClose={() => { setShowingAddHistory(false) }}>
+
+                        <h2>Add Event</h2>
+
+                        <form onSubmit={addEvent}>
+
+                            <AddEventForm />
+
+                            <button>Add</button>
+
+                        </form> 
+                        
+                    </Popup>
+                : ''
+            }
+
+
+            <h2 className="view-section-heading">Class History</h2>
+            <button style={{width: '100%'}} onClick={() => { setShowingAddHistory(true) }}>Add</button>
+            <div className="student-history">
+                { (data && (data.history ?? []).sort((a, b) => (b.date ?? new Date()) - (a.date ?? new Date())).map((e, i) => 
+                    <div key={[e, i]} className="event card">
+                        <div className="action">{e.action ?? '?'}</div>
+                        <div className="info">
+                            <header>
+                                <div className="date">
+                                    <ReactTimeAgo date={e.date?.toDate()} locale="en-US"/>
+                                </div>
+                                <div className="class">Class {historyClasses[i]?.name ?? ''} at {historyClasses[i]?.times?.[(e.time ?? -1)] && (historyClasses[i].times?.[e.time].name ?? '')}</div>
+                            </header>
+                            <div className="note">{e.note ?? ''}</div>
+                        </div>
+                    </div>
+                )) }
+            </div>
 
 
             <h2 className="view-section-heading">Notes</h2>

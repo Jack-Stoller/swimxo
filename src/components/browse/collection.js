@@ -22,7 +22,23 @@ const BrowseCollection = (props) => {
     const [filteredData, setFilteredData] = useState([]);
 
     useEffect(() => {
-        setFilteredData((data ?? []).filter(d => d[props.searchableField].toLowerCase().includes(searchStr)));
+
+        let d = (data && props.subcollection) ?
+            data.reduce(
+                (a, b) => 
+                    a.concat(
+                        (props.parentKeyName) ?
+                        b[props.subcollection].map(s => {
+                            return {...s, [props.parentKeyName]: b}
+                        })
+                        : b[props.subcollection]
+
+                    ),
+                    []
+                )
+        : data;
+
+        setFilteredData((d ?? []).filter(s => s[props.searchableField].toLowerCase().includes(searchStr.toLowerCase())));
     }, [data, searchStr]);
 
 
@@ -54,7 +70,7 @@ const BrowseCollection = (props) => {
             </header>
 
             <div className="results">
-                {filteredData && filteredData.map(dat => <props.component data={dat} key={dat.id} onClick={() => {
+                {filteredData && filteredData.map(dat => <props.component data={dat} key={dat} onClick={() => {
                     if (props.onSelect) props.onSelect(dat.id, dat);
                 }} />)}
             </div>
