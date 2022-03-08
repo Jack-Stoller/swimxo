@@ -1,9 +1,10 @@
 
+import { Portal } from 'react-portal';
 import './popup.css';
 
 const Popup = (props) => {
     return (
-        <>
+        <Portal>
             <section className="popup">
                 {props.children}
             </section>
@@ -12,7 +13,7 @@ const Popup = (props) => {
             }}>
 
             </section>
-        </>
+        </Portal>
     )
 }
 

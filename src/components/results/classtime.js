@@ -8,8 +8,8 @@ const ClassTimeResult = (props) => {
 
     console.log(props);
 
-    let start = props.data.start;
-    let end = props.data.end;
+    let start = props.data.start?.toDate();
+    let end = props.data.end?.toDate();
     
     return (
         <SectionLink onClick={(e) => {if (props.onClick) props.onClick(e)}}>
@@ -18,16 +18,18 @@ const ClassTimeResult = (props) => {
                 <div className="info">
                     <div className="name">Class {props.data.class?.name ?? '?'}</div>
                     <div className="date">
-                        {mon[start?.getMonth() ?? 12]} {start?.getDate()} {start?.getFullYear()}
-                        &nbsp;to&nbsp;
-                        {mon[end?.getMonth() ?? 12]} {end?.getDate()} {end?.getFullYear()}
+                        {
+                            (start && end) ?
+                            `${mon[start.getMonth() ?? 12]} ${start.getDate()} ${start.getFullYear()} to ${mon[end.getMonth() ?? 12]} ${end.getDate()} ${end.getFullYear()}`
+                            : `Unknown`
+                        
+                        }
                     </div>
                     <div className="time">
                         {
                             (start && end) ?
-                                `${start.getHours()}:${start.getMinutes().toString().padStart(2, '0')} to ${end.getHours()}:${end.getMinutes().toString().padStart(2, '0')}`
-                            :
-                                'Unknown'
+                            `${start.getHours()}:${start.getMinutes().toString().padStart(2, '0')} to ${end.getHours()}:${end.getMinutes().toString().padStart(2, '0')}`
+                            : 'Unknown'
                         }
                     </div>
                     <div className="days">

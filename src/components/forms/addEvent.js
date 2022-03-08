@@ -33,11 +33,11 @@ const AddEventForm = (props) => {
 
     return (
         <>
-            <label>Class</label>
+            <label>Class Time</label>
             <SectionLink onClick={() => {setPickingClass(true)}}>
                 {
                     (selClass == null) ?
-                        'Pick Class'
+                        'Pick Class Time'
                     :
                     <>
                         <strong>{selClass.name}</strong>
@@ -59,7 +59,7 @@ const AddEventForm = (props) => {
             {
                (pickingClass) ?
                <Popup onClose={() => {setPickingClass(false)}}>
-                    <h2>Pick a class</h2>
+                    <h2>Pick a class time</h2>
                     <BrowseCollection
                         name="classes"
                         component={ClassTimeResult}
@@ -67,6 +67,8 @@ const AddEventForm = (props) => {
                         orderByField="name"
                         searchableField="name"
                         subcollection="times"
+                        subcollectionName="class time"
+                        subcollectionGetKey={(d) => [d.class.id, d.times.indexOf(d)]}
                         parentKeyName="class"
                         onSelect={(_, data) => { pickClass(data); }}
                     />

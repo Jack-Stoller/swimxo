@@ -21,26 +21,34 @@ const BrowseCollection = (props) => {
 
     const [filteredData, setFilteredData] = useState([]);
 
+    const displayName = (props.subcollection) ? props.subcollectionName ?? '' : props.name ?? '';
+
     useEffect(() => {
+
+        console.log(data);
 
         let d = (data && props.subcollection) ?
             data.reduce(
-                (a, b) => 
-                    a.concat(
+                (a, b) => {
+                    return a.concat(
                         (props.parentKeyName) ?
-                        b[props.subcollection].map(s => {
+                        (b[props.subcollection] ?? []).map(s => {
                             return {...s, [props.parentKeyName]: b}
                         })
                         : b[props.subcollection]
 
-                    ),
+                    )},
                     []
                 )
         : data;
 
-        setFilteredData((d ?? []).filter(s => s[props.searchableField].toLowerCase().includes(searchStr.toLowerCase())));
+        setFilteredData((d ?? []).filter(s => (s[props.searchableField] ?? '').toLowerCase().includes(searchStr.toLowerCase())));
     }, [data, searchStr]);
 
+
+    useEffect(() => {
+        console.log(filteredData);
+    }, [filteredData]);
 
 
     return (
@@ -53,11 +61,11 @@ const BrowseCollection = (props) => {
                     (props.search && !props.search) ?
                     <></>
                     :
-                    <Search value={searchStr} placeholder={'Search ' + (props.name ?? '') + '...'} onSearch={(e, s) => {e.preventDefault(); setSearchStr(s)}} />
+                    <Search value={searchStr} placeholder={'Search ' + displayName + '...'} onSearch={(e, s) => {e.preventDefault(); setSearchStr(s)}} />
                 }
 
                 <div className="results-and-add-btn">
-                    <h3>Showing {filteredData && filteredData.length} {props.name ?? ''} {(searchStr !== '') ? `that have "${searchStr}" it their ${props.searchableField}.` : '' }</h3>
+                    <h3>Showing {filteredData && filteredData.length} {displayName} {(searchStr !== '') ? `that have "${searchStr}" it their ${props.searchableField}.` : '' }</h3>
                     {
                         (props.addUrl) ?
                         <Link to={props.addUrl}>
