@@ -16,6 +16,8 @@ import { idConverter } from '../../utils/firestore';
 import TimeAgo from 'javascript-time-ago';
 import ReactTimeAgo from 'react-time-ago';
 import AddEventForm from '../forms/addEvent';
+import { getFormData } from '../../utils/form';
+import { getObj } from '../../utils/objTools';
 
 const StudentView = (props) => {
 
@@ -34,6 +36,7 @@ const StudentView = (props) => {
     )
 
     const [showingAddHistory, setShowingAddHistory] = useState(false);
+    const [submittingAddHistory, setSubmittingAddHistory] = useState(false);
 
 
     const [age, setAge] = useState(null);
@@ -70,21 +73,19 @@ const StudentView = (props) => {
         if (data.history) {
 
             for (let i = 0; i < data.history.length; i++) {
-                if (!(data?.history?.[i])) continue;
-
-                console.log(data.history[i].class.parent, data.history[i].class.id);
+                if (!(data?.history?.[i].class?.id)) continue;
 
                 firebase.firestore()
                     .collection(data.history[i].class.parent.id)
                     .doc(data.history[i].class.id)
                     .onSnapshot(snap => {
-                    historyClasses.splice(i, 1, {
-                        ...snap.data(),
-                        id: snap.id
-                    });
+                        historyClasses.splice(i, 1, {
+                            ...snap.data(),
+                            id: snap.id
+                        });
 
-                    setHistoryClasses([...historyClasses]);
-                });
+                        setHistoryClasses([...historyClasses]);
+                    });
 
                 classes.push({});
             }
@@ -104,7 +105,7 @@ const StudentView = (props) => {
     }
 
     const newNote = async(body) => {
-        if (!body || body == '') return;
+        if (!body || body === '') return;
         const auth = await firebase.auth();
 
         firebase.firestore().doc('/students/' + (props.id ?? id)).update({
@@ -120,7 +121,40 @@ const StudentView = (props) => {
     const addEvent = async(e) => {
         e.preventDefault();
 
-        
+        setSubmittingAddHistory(true);
+
+        const [data, refUpdates] = getFormData(e, firebase.firestore());
+        const auth = await firebase.auth();
+
+        await firebase.firestore().doc('/students/' + (props.id ?? id)).update({
+            history: firebase.firestore.FieldValue.arrayUnion({
+                ...data,
+                date: new Date(), /* Use client bc arrays and firestore don't work */
+                user: auth.currentUser.displayName,
+                user_id: auth.currentUser.uid
+            })
+        }).then((ref) => {
+            refUpdates.forEach(async u => {
+                //I should be using subcollections but that's too hard
+                await u.doc.get().then((doc) => {
+                    let d = doc.data();
+                    let [index, prop] = u.prop.split('.');
+
+                    if (!d.times[index].student_info)
+                        d.times[index].student_info = {};
+
+                    d.times[index].student_info[prop] = [...(d.times?.[index]?.student_info?.[prop] ?? []), firebase.firestore().doc('/students/' + (props.id ?? id))];
+
+                    u.doc.update({
+                        times: d.times
+                    });
+                });
+            });
+
+            setSubmittingAddHistory(false);
+            setShowingAddHistory(false);
+        });
+
     }
 
 
@@ -135,8 +169,8 @@ const StudentView = (props) => {
         {
             (promptDelete) ?
             <Popup onClose={() => { setPromptDelete(false) }}>
-                <h2>Delete {data && (data.name ?? '??')}</h2>
-                <div>Are you sure you want to delete {data && (data.name ?? '??')}? This can't be undone!</div>
+                <h2>Delete {data && (data.name ?? '?')}</h2>
+                <div>Are you sure you want to delete {data && (data.name ?? '?')}? This can't be undone!</div>
 
                 <div className="actions">
                     <button onClick={() => { setPromptDelete(false) }}>No</button>
@@ -148,7 +182,7 @@ const StudentView = (props) => {
         }
             <header className="view-header">
                 <div>
-                    <h1>{data && (data.name ?? '??')}</h1>
+                    <h1>{data && (data.name ?? '?')}</h1>
                     <h3 className="view-section-heading">Student</h3>
                 </div>
                 <div className="actions">
@@ -185,17 +219,23 @@ const StudentView = (props) => {
             {
                 (showingAddHistory) ?
                     <Popup onClose={() => { setShowingAddHistory(false) }}>
+                        {
+                            (submittingAddHistory) ?
+                            <Loading />
+                            :
+                            <>
+                                <h2>Add Event</h2>
 
-                        <h2>Add Event</h2>
+                                <form style={{position: 'relative'}} onSubmit={addEvent}>
 
-                        <form onSubmit={addEvent}>
+                                    <AddEventForm />
 
-                            <AddEventForm />
+                                    <button>Add</button>
 
-                            <button>Add</button>
+                                </form>
 
-                        </form> 
-                        
+                            </>
+                        }
                     </Popup>
                 : ''
             }
@@ -204,7 +244,7 @@ const StudentView = (props) => {
             <h2 className="view-section-heading">Class History</h2>
             <button style={{width: '100%'}} onClick={() => { setShowingAddHistory(true) }}>Add</button>
             <div className="student-history">
-                { (data && (data.history ?? []).sort((a, b) => (b.date ?? new Date()) - (a.date ?? new Date())).map((e, i) => 
+                { (data && (data.history ?? []).sort((a, b) => (b.date ?? new Date()) - (a.date ?? new Date())).map((e, i) =>
                     <div key={[e, i]} className="event card">
                         <div className="action">{e.action ?? '?'}</div>
                         <div className="info">

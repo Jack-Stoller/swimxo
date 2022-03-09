@@ -1,7 +1,7 @@
 import React, { Component, useEffect } from 'react';
 import './browse.css';
 import FamilyResult from './results/family';
-import ParentResult from './results/parents';
+import ParentResult from './results/parent';
 import StudentResult from './results/student';
 import ClassResult from './results/class';
 import Search from './search';

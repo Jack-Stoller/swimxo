@@ -21,34 +21,36 @@ const BrowseCollection = (props) => {
 
     const [filteredData, setFilteredData] = useState([]);
 
-    const displayName = (props.subcollection) ? props.subcollectionName ?? '' : props.name ?? '';
+    const displayName = (props.subcollection?.name) ? props.subcollection.name ?? '' : props.name ?? '';
 
     useEffect(() => {
 
-        console.log(data);
+        const procSub = (p) => {
+            let d = p[props.subcollection.key] ?? [];
 
-        let d = (data && props.subcollection) ?
+            if (props.subcollection?.parentKey)
+                d = d.map(s => {
+                    return {...s, [props.subcollection.parentKey]: p}
+                });
+
+            if (props.subcollection?.indexKey)
+                d = d.map((s, i) => {
+                    return {...s, [props.subcollection.indexKey]: i}
+                });
+
+            return d;
+        }
+
+        let d = (data && props.subcollection?.key) ?
             data.reduce(
                 (a, b) => {
-                    return a.concat(
-                        (props.parentKeyName) ?
-                        (b[props.subcollection] ?? []).map(s => {
-                            return {...s, [props.parentKeyName]: b}
-                        })
-                        : b[props.subcollection]
-
-                    )},
+                    return a.concat(procSub(b))},
                     []
                 )
         : data;
 
         setFilteredData((d ?? []).filter(s => (s[props.searchableField] ?? '').toLowerCase().includes(searchStr.toLowerCase())));
-    }, [data, searchStr]);
-
-
-    useEffect(() => {
-        console.log(filteredData);
-    }, [filteredData]);
+    }, [data, searchStr, props]);
 
 
     return (
@@ -61,7 +63,7 @@ const BrowseCollection = (props) => {
                     (props.search && !props.search) ?
                     <></>
                     :
-                    <Search value={searchStr} placeholder={'Search ' + displayName + '...'} onSearch={(e, s) => {e.preventDefault(); setSearchStr(s)}} />
+                    <Search value={searchStr} placeholder={'Search ' + displayName + '...'} onSearch={(e, s) => {e.preventDefault(); e.stopPropagation(); setSearchStr(s)}} />
                 }
 
                 <div className="results-and-add-btn">
@@ -78,9 +80,13 @@ const BrowseCollection = (props) => {
             </header>
 
             <div className="results">
-                {filteredData && filteredData.map(dat => <props.component data={dat} key={dat} onClick={() => {
-                    if (props.onSelect) props.onSelect(dat.id, dat);
-                }} />)}
+                {filteredData && filteredData.map(dat => <props.component
+                    data={dat}
+                    key={(props.getId) ? props.getId(dat) : dat.id}
+                    onClick={() => {
+                        if (props.onSelect) props.onSelect(dat.id, dat);
+                    }}
+                    />)}
             </div>
         </>
     );

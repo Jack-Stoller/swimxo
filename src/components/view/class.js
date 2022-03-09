@@ -54,8 +54,8 @@ const ClassView = (props) => {
         {
             (promptDelete) ?
             <Popup onClose={() => { setPromptDelete(false) }}>
-                <h2>Delete {data && (data.name ?? '??')}</h2>
-                <div>Are you sure you want to delete {data && (data.name ?? '??')}? This can't be undone!</div>
+                <h2>Delete {data && (data.name ?? '?')}</h2>
+                <div>Are you sure you want to delete {data && (data.name ?? '?')}? This can't be undone!</div>
 
                 <div className="actions">
                     <button onClick={() => { setPromptDelete(false) }}>No</button>
@@ -66,7 +66,7 @@ const ClassView = (props) => {
             ''
         }
             <header className="view-header">
-                <h1>Class {data && (data.name ?? '??')}</h1>
+                <h1>Class {data && (data.name ?? '?')}</h1>
                 <div className="actions">
                     <Link to="edit"><button className="icon">
                         <EditIcon style={{ verticalAlign: 'unset' }} />

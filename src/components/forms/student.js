@@ -44,12 +44,13 @@ const StudentForm = (props) => {
             </SectionLink>
             <input type="text"
                 style={{position: 'absolute', opacity: 0, height: '1px', width: '100%', padding: 0, margin: 0}}
-                onFocus={(e) => {e.target.previousElementSibling.focus()}} name="family"
+                onFocus={(e) => {e.target.previousElementSibling.focus()}}
                 value={family ? '/families/' + family.id : ''}
                 onClick={() => {setPickingFamily(true)}}
                 onChange={() => {}}
                 data-type="reference"
                 data-ref-array="students"
+                name="family"
                 required
             />
 

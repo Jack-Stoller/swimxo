@@ -1,6 +1,7 @@
 import firebase from 'firebase/compat/app';
 import { useNavigate } from 'react-router-dom';
 import { getFormData } from '../utils/form';
+import { getObj } from '../utils/objTools';
 import './addDoc.css';
 
 import Form from './forms/form';
@@ -29,9 +30,9 @@ const AddDoc = (props) => {
         }).then((ref) => {
 
             refUpdates.forEach(u => {
-                u.doc.update({
-                    [u.prop]: firebase.firestore.FieldValue.arrayUnion(`/${props.sys_name}/${ref.id}`)
-                })
+                u.doc.update(
+                    getObj(u.prop, firebase.firestore.FieldValue.arrayUnion(firestore.doc(`/${props.sys_name}/${ref.id}`)))
+                )
             });
 
             nav(`/${props.singleName}/${ref.id}`);

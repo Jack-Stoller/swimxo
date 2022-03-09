@@ -16,7 +16,7 @@ class FamilyResult extends Component {
             //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
         });
 
-        let owes = formatter.format(this.props.data.payments?.map(p => p.amount).reduce((a, b) => a + b, 0));
+        let owes = formatter.format(this.props.data.transactions?.map(p => p.amount).reduce((a, b) => a + b, 0));
 
         if (owes === '$NaN') owes = '$0';
 

@@ -11,6 +11,7 @@ import FamilyForm from "../components/forms/family";
 import ParentForm from "../components/forms/parent";
 import StudentForm from "../components/forms/student";
 import ClassView from "../components/view/class";
+import FamilyView from "../components/view/family";
 import ParentView from "../components/view/parent";
 import StudentView from "../components/view/student";
 import Nav from './../components/nav';
@@ -68,8 +69,9 @@ function Portal() {
                                     form={ClassForm}
                                 />
                             } />
-                            <Route path="/add/family" element={
-                                <AddDoc
+                            <Route path="/family/:id/edit" element={
+                                <EditDoc
+                                    nameKey="lastname"
                                     singleName="family"
                                     sys_name="families"
                                     form={FamilyForm}
@@ -96,11 +98,7 @@ function Portal() {
                                 <ClassView />
                             } />
                             <Route path="/family/:id" element={
-                                <AddDoc
-                                    singleName="family"
-                                    sys_name="families"
-                                    form={FamilyForm}
-                                />
+                                <FamilyView />
                             } />
                             <Route path="/parent/:id" element={
                                 <ParentView />

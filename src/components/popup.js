@@ -5,12 +5,13 @@ import './popup.css';
 const Popup = (props) => {
     return (
         <Portal>
-            <section className="popup">
-                {props.children}
-            </section>
-            <section className="backdrop" onClick={() => {
+            <section className="popup-backdrop" onClick={() => {
                 if (props.onClose) props.onClose('backdrop');
             }}>
+
+                <section className="popup" onClick={(e) => {e.stopPropagation();}}>
+                    {props.children}
+                </section>
 
             </section>
         </Portal>

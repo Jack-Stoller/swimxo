@@ -1,0 +1,16 @@
+.transactions {
+    background-color: white;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 15px;
+    padding: 16px 0px;
+}
+
+.transaction {
+    display: grid;
+    grid-template-columns: 15% 10% 20% 55%;
+    padding: 16px 32px;
+}
+
+.transaction .date {
+    color: grey;
+}

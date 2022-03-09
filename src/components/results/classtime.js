@@ -6,11 +6,9 @@ const ClassTimeResult = (props) => {
     const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','??'];
     const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat','??'];
 
-    console.log(props);
-
     let start = props.data.start?.toDate();
     let end = props.data.end?.toDate();
-    
+
     return (
         <SectionLink onClick={(e) => {if (props.onClick) props.onClick(e)}}>
             <div className="result">
@@ -22,7 +20,7 @@ const ClassTimeResult = (props) => {
                             (start && end) ?
                             `${mon[start.getMonth() ?? 12]} ${start.getDate()} ${start.getFullYear()} to ${mon[end.getMonth() ?? 12]} ${end.getDate()} ${end.getFullYear()}`
                             : `Unknown`
-                        
+
                         }
                     </div>
                     <div className="time">
@@ -34,7 +32,7 @@ const ClassTimeResult = (props) => {
                     </div>
                     <div className="days">
                         {(props.data.days ?? []).map(d => days[d]).join(', ')}
-                    </div>    
+                    </div>
                 </div>
             </div>
         </SectionLink>

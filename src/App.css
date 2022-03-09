@@ -46,6 +46,20 @@ button.icon {
     font-weight: 200;
 }
 
+button.text {
+    display: inline;
+    width: unset;
+    height: unset;
+
+    background-color: transparent;
+    box-shadow: none;
+
+    color: inherit;
+    font-size: inherit;
+
+    padding: 0px;
+}
+
 svg {
     margin: 0;
 }

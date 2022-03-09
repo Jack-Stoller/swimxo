@@ -69,7 +69,7 @@ const ParentView = (props) => {
         });
 
         if (fData) {
-            let lOwes = formatter.format((fData.payments ?? []).map(p => p.amount).reduce((a, b) => a + b, 0));
+            let lOwes = formatter.format((fData.transactions ?? []).map(p => p.amount).reduce((a, b) => a + b, 0));
 
             if (lOwes === '$NaN') lOwes = '$0';
 
@@ -90,8 +90,8 @@ const ParentView = (props) => {
         {
             (promptDelete) ?
             <Popup onClose={() => { setPromptDelete(false) }}>
-                <h2>Delete {data && (data.name ?? '??')}</h2>
-                <div>Are you sure you want to delete {data && (data.name ?? '??')}? This can't be undone!</div>
+                <h2>Delete {data && (data.name ?? '?')}</h2>
+                <div>Are you sure you want to delete {data && (data.name ?? '?')}? This can't be undone!</div>
 
                 <div className="actions">
                     <button onClick={() => { setPromptDelete(false) }}>No</button>
@@ -103,7 +103,7 @@ const ParentView = (props) => {
         }
             <header className="view-header">
                 <div>
-                    <h1>{data && (data.name ?? '??')}</h1>
+                    <h1>{data && (data.name ?? '?')}</h1>
                     <h3 className="view-section-heading">Parent</h3>
                 </div>
                 <div className="actions">
@@ -129,7 +129,7 @@ const ParentView = (props) => {
                     </div>
                 </div>
                 <div>
-                    <div className="method">Phone</div>
+                    <div className="name">Phone</div>
                     <div className="value">
                         <a href={'tel:' +(data.phone ?? '')}>{(data.phone ?? '')}</a>
                     </div>

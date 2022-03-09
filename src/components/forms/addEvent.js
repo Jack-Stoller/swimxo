@@ -41,19 +41,23 @@ const AddEventForm = (props) => {
                     :
                     <>
                         <strong>{selClass.name}</strong>
-                        <span>&nbsp;(Tap to change)</span>
+                        <span>&nbsp;from <strong>{selClass.class.name}</strong> (Tap to change)</span>
                     </>
                 }
             </SectionLink>
             <input type="text"
                 style={{position: 'absolute', opacity: 0, height: '1px', width: '100%', padding: 0, margin: 0}}
                 onFocus={(e) => {e.target.previousElementSibling.focus()}} name="class"
-                value={selClass ? '/classes/' + selClass.id : ''}
+                value={selClass ? '/classes/' + selClass.class.id : ''}
                 onClick={() => {setPickingClass(true)}}
                 onChange={() => {}}
                 data-type="reference"
+                data-ref-array={`${selClass?.index}.${action}`}
                 required
             />
+
+            <input type="hidden" name="time" data-type="int" value={selClass?.index ?? -1} onChange={() => {}} />
+            <input type="hidden" name="name" value={selClass?.class.name ?? '?'} onChange={() => {}} />
 
 
             {
@@ -63,13 +67,15 @@ const AddEventForm = (props) => {
                     <BrowseCollection
                         name="classes"
                         component={ClassTimeResult}
-                        addUrl="/add/class"
                         orderByField="name"
                         searchableField="name"
-                        subcollection="times"
-                        subcollectionName="class time"
-                        subcollectionGetKey={(d) => [d.class.id, d.times.indexOf(d)]}
-                        parentKeyName="class"
+                        subcollection={{
+                            name: "class time",
+                            key: "times",
+                            parentKey: "class",
+                            indexKey: "index",
+                        }}
+                        getId={(d) => d.class?.id?.toString() + d.index?.toString()}
                         onSelect={(_, data) => { pickClass(data); }}
                     />
                 </Popup>
@@ -90,8 +96,12 @@ const AddEventForm = (props) => {
                             value: "waitlist"
                         },
                         {
-                            label: "Prompted",
-                            value: "prompted"
+                            label: "Completed",
+                            value: "completed"
+                        },
+                        {
+                            label: "Promoted",
+                            value: "promoted"
                         },
                         {
                             label: "Placed",
@@ -103,13 +113,13 @@ const AddEventForm = (props) => {
                     backgroundColor="#eceaf0"
                     selectedBackgroundColor="#3F00FF"
                 />
-                <input type="hidden" data-type="bool" name="action" value={action} />
+                <input type="hidden" name="action" value={action} />
 
 
             </div>
 
             <label htmlFor="note">Notes</label>
-            <textarea name="note" defaultValue={props.data?.note ?? ''} placeholder="Notes" required></textarea>
+            <textarea name="note" defaultValue={props.data?.note ?? ''} placeholder="Notes"></textarea>
         </>
     );
 }

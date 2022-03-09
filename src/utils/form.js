@@ -13,6 +13,10 @@ const getFormData = (formEvent, db) => {
                 data[n] = parseFloat(els[i].value);
                 break;
 
+            case 'int':
+                data[n] = parseInt(els[i].value);
+                break;
+
             case 'date':
                 data[n] = new Date(els[i].value);
                 break;
@@ -21,7 +25,7 @@ const getFormData = (formEvent, db) => {
                 data[n] = db.doc(els[i].value);
 
                 let r = els[i].getAttribute('data-ref-array');
-                if (r) refUpdates.push({prop: r, doc: data[n]})
+                if (r) refUpdates.push({prop: r, doc: data[n], name: n})
 
                 break;
 
@@ -31,6 +35,9 @@ const getFormData = (formEvent, db) => {
 
             case 'bool':
                 data[n] = String(els[i].value).toLowerCase() === 'true'
+                break;
+
+            case 'ignored':
                 break;
 
             default:
