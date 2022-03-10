@@ -6,7 +6,7 @@ import { ReactComponent as EditIcon } from './../../assets/icons/edit.svg';
 import { ReactComponent as DeleteIcon } from './../../assets/icons/delete.svg';
 import StudentResult from './../results/student';
 import ParentResult from './../results/parent';
-
+import AddDoc from '../addDoc';
 
 import './family.css'
 import './view.css';
@@ -16,6 +16,9 @@ import Note from '../notes/note';
 import NoteAdd from '../notes/add';
 import ReactTimeAgo from 'react-time-ago';
 import TransactionForm from '../forms/transaction';
+import { getFormData } from '../../utils/form';
+import StudentForm from '../forms/student';
+import ParentForm from '../forms/parent';
 
 const FamilyView = (props) => {
 
@@ -24,7 +27,12 @@ const FamilyView = (props) => {
 
     const [promptDelete, setPromptDelete] = useState(false);
     const [showAddTrans, setShowAddTrans] = useState(false);
+    const [addingTrans, setAddingTrans] = useState(false);
 
+    const [showAddStudent, setShowAddStudent] = useState(false);
+
+    const [showAddParent, setShowAddParent] = useState(false);
+    
     const [data, loading] = useDocumentData(
         (id || props.id) ? firebase.firestore().doc('/families/' + (props.id ?? id)) : null
     );
@@ -54,8 +62,29 @@ const FamilyView = (props) => {
                 user_id: auth.currentUser.uid
             })
         });
-
     }
+
+    const addTransaction = async(e) => {
+        e.preventDefault();
+
+        setAddingTrans(true);
+
+        const [data] = getFormData(e, firebase.firestore());
+        const auth = await firebase.auth();
+
+        await firebase.firestore().doc('/families/' + (props.id ?? id)).update({
+            transactions: firebase.firestore.FieldValue.arrayUnion({
+                ...data,
+                date: new Date(), /* Use client bc arrays and firestore don't work */
+                user: auth.currentUser.displayName,
+                user_id: auth.currentUser.uid
+            })
+        }).then((ref) => {
+            setAddingTrans(false);
+            setShowAddTrans(false);
+        });
+    }
+
 
     const [students, setStudents] = useState([]);
     const [parents, setParents] = useState([]);
@@ -171,16 +200,22 @@ const FamilyView = (props) => {
             {
                 (showAddTrans) ?
                 <Popup onClose={() => {setShowAddTrans(false)}}>
-                    <form>
+                    {
+                        (addingTrans) ?
+                        <Loading />
+                        :
+                        <>
+                            <h2>Add a transaction {data?.lastname && ('for ' + data.lastname)}</h2>
+                            
+                            <form onSubmit={addTransaction}>
+                                <TransactionForm />
 
-                        <h2>Add a transaction {data?.lastname && ('for ' + data.lastname)}</h2>
-
-                        <TransactionForm />
-
-                    </form>
+                                <button>Add</button>
+                            </form>
+                        </>
+                    }
                 </Popup>
-                :
-                ''
+                : ''
             }
 
             <div className="action-heading">
@@ -220,7 +255,26 @@ const FamilyView = (props) => {
             </div>
 
 
-            <h2 className="view-section-heading">Students {students ? `(${students.length})` : ''}</h2>
+            {
+            (showAddStudent) ?
+                <Popup onClose={() => {setShowAddStudent(false)}}>
+                    <AddDoc
+                        singleName="student"
+                        sys_name="students"
+                        form={StudentForm}
+                        defaultData={{family: firebase.firestore().doc('/families/' + (props.id ?? id))}}
+                        gotoAfterCreate={false}
+                        onCreate={() => {setShowAddStudent(false)}}
+                    />
+                </Popup>
+                : ''
+            }
+
+
+            <div className="action-heading">
+                <h2 className="view-section-heading">Students {students ? `(${students.length})` : ''}</h2>
+                <button className="icon" onClick={() => {setShowAddStudent(true)}}>+</button>
+            </div>
             {
                 (students ?? []).map(s =>
                     <StudentResult onClick={() => {nav('/student/' + s.id)}} key={s.id} data={s} />
@@ -228,7 +282,25 @@ const FamilyView = (props) => {
             }
 
 
-            <h2 className="view-section-heading">Parents {parents ? `(${parents.length})` : ''}</h2>
+            {
+            (showAddParent) ?
+                <Popup onClose={() => {setShowAddParent(false)}}>
+                    <AddDoc
+                        singleName="parent"
+                        sys_name="parents"
+                        form={ParentForm}
+                        defaultData={{family: firebase.firestore().doc('/families/' + (props.id ?? id))}}
+                        gotoAfterCreate={false}
+                        onCreate={() => {setShowAddParent(false)}}
+                    />
+                </Popup>
+                : ''
+            }
+
+            <div className="action-heading">
+                <h2 className="view-section-heading">Parents {parents ? `(${parents.length})` : ''}</h2>
+                <button className="icon" onClick={() => {setShowAddParent(true)}}>+</button>
+            </div>
             {
                 (parents ?? []).map(p =>
                     <ParentResult onClick={() => {nav('/parent/' + p.id)}} key={p.id} data={p} />

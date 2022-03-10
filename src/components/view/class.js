@@ -43,6 +43,10 @@ const ClassView = (props) => {
         nav('/browse/classes');
     }
 
+    const capFirstLetter = (word) => {
+        return word.substring(0, 1).toUpperCase() + word.substring(1, word.length).toLowerCase();
+    }
+
     return (
         (loading && !data) ?
         <Loading />
@@ -78,25 +82,6 @@ const ClassView = (props) => {
             </header>
 
             <div>{data && (data.description ?? '??')}</div>
-
-            <h2 className="view-section-heading">Skills</h2>
-            <div className="class-skills">
-                {data && (data.skills ?? []).map((s, i) => (
-
-                    <div className="card class-skill" key={[s, i]}>
-                        <h2>{s.name ?? 'Unknown'}</h2>
-                        <h4>Goal: {s.goal ?? 'Unknown'}</h4>
-                        <div>{s.description ?? ''}</div>
-                    </div>
-
-                ))}
-                {
-                    data && ((data.skills ?? []).length === 0) ?
-                    <h2 style={{textAlign: 'center'}}>No Skills</h2>
-                   :
-                   ''
-                }
-            </div>
 
             <h2 className="view-section-heading">Times</h2>
             <div className="class-times">
@@ -135,10 +120,48 @@ const ClassView = (props) => {
                                     {(t.days ?? []).map(d => days[d]).join(', ')}
                                 </div>
                             </div>
+                            <div className="view-table">
+                                {
+                                    (t?.student_info) ?
+                                        Object.keys(t.student_info).map(k => 
+                                            <div key={k}>
+                                                <div className="name">{capFirstLetter(k)}</div>
+                                                <div className="value">{t.student_info[k].length}</div>
+                                            </div>
+                                        )
+                                    : ''
+                                }
+                                {
+                                    (!t?.student_info || t.student_info === {}) ?
+                                    <h3>No student interaction yet</h3>
+                                    : ''
+                                }
+                            </div>
                         </div>
                     )
                 })}
             </div>
+            
+
+            <h2 className="view-section-heading">Skills</h2>
+            <div className="class-skills">
+                {data && (data.skills ?? []).map((s, i) => (
+
+                    <div className="card class-skill" key={[s, i]}>
+                        <h2>{s.name ?? 'Unknown'}</h2>
+                        <h4>Goal: {s.goal ?? 'Unknown'}</h4>
+                        <div>{s.description ?? ''}</div>
+                    </div>
+
+                ))}
+                {
+                    data && ((data.skills ?? []).length === 0) ?
+                    <h2 style={{textAlign: 'center'}}>No Skills</h2>
+                   :
+                   ''
+                }
+            </div>
+
         </>
     );
 }

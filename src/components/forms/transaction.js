@@ -13,6 +13,12 @@ import './forms.css';
 const TransactionForm = (props) => {
 
     const [amount, setAmount] = useState(props.data?.amount ?? 0);
+    const [isCharge, setIsCharge] = useState(props.data?.amount ? props.data?.amount <= 0 : true);
+
+    useEffect(() => {
+
+        console.log(amount, isCharge);
+    }, [amount, isCharge])
 
 
     return (
@@ -30,21 +36,17 @@ const TransactionForm = (props) => {
                             value: false
                         }
                     ]}
-                    initialSelectedIndex={[true, false].indexOf(props.data?.action ?? 0)}
-                    onChange={(v) => {
-                        setAmount(Math.abs(amount) * (v) ? 1 : -1);
-                    }}
+                    initialSelectedIndex={[true, false].indexOf(isCharge)}
+                    onChange={setIsCharge}
                     backgroundColor="#eceaf0"
                     selectedBackgroundColor="#3F00FF"
                 />
             </div>
 
-            <input type="hidden" data-type="number" name="amount" value={amount} />
-            <input type="hidden" data-type="date" name="date" value={new Date()} />
-
+            <input type="hidden" data-type="number" name="amount" value={parseFloat(amount) * (isCharge ? -1 : 1)} />
 
             <label htmlFor="absAmount">Amount</label>
-            <input type="number" data-type="ignored" name="absAmount" value={Math.abs(amount)} onChange={(e) => {setAmount(Math.abs(e.target.value))}} placeholder="Amount" />
+            <input type="text" data-type="ignored" name="absAmount" value={(amount) ? amount : ''} onChange={(e) => setAmount(e.target.value.replaceAll(/[^(\d|.)]/g, ''))} placeholder="Amount" />
 
             <label htmlFor="note">Notes</label>
             <textarea name="note" defaultValue={props.data?.note ?? ''} placeholder="Notes"></textarea>

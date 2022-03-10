@@ -154,7 +154,6 @@ const StudentView = (props) => {
             setSubmittingAddHistory(false);
             setShowingAddHistory(false);
         });
-
     }
 
 
@@ -252,7 +251,7 @@ const StudentView = (props) => {
                                 <div className="date">
                                     <ReactTimeAgo date={e.date?.toDate()} locale="en-US"/>
                                 </div>
-                                <div className="class">Class {historyClasses[i]?.name ?? ''} at {historyClasses[i]?.times?.[(e.time ?? -1)] && (historyClasses[i].times?.[e.time].name ?? '')}</div>
+                                <div className="class">Class <Link to={'/class/' + historyClasses[i]?.id}>{historyClasses[i]?.name ?? ''}</Link> at {historyClasses[i]?.times?.[(e.time ?? -1)] && (historyClasses[i].times?.[e.time].name ?? '')}</div>
                             </header>
                             <div className="note">{e.note ?? ''}</div>
                         </div>

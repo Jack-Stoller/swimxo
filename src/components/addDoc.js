@@ -1,17 +1,23 @@
 import firebase from 'firebase/compat/app';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getFormData } from '../utils/form';
 import { getObj } from '../utils/objTools';
 import './addDoc.css';
 
 import Form from './forms/form';
+import Loading from './loading';
 
 const AddDoc = (props) => {
 
     const nav = useNavigate();
 
+    const [loading, setLoading] = useState(false);
+
     const handleSubmit = async(e) => {
         e.preventDefault();
+
+        setLoading(true);
 
         const firestore = firebase.firestore();
         const ref = await firestore.collection(props.sys_name);
@@ -35,15 +41,31 @@ const AddDoc = (props) => {
                 )
             });
 
-            nav(`/${props.singleName}/${ref.id}`);
+            if (props.onCreate)
+                props.onCreate(ref);
+
+            setLoading(false);
+
+
+            if (props.gotoAfterCreate)
+                nav(`/${props.singleName}/${ref.id}`);
         });
     }
 
+    console.log(props);
+
     return (
         <>
-            <h1>Add a {props.singleName}</h1>
+            {
+                (loading) ?
+                <Loading />
+                :
+                <>
+                    <h1>Add a {props.singleName}</h1>
 
-            <Form formType={props.form} onSubmit={handleSubmit} actionText="Add"/>
+                    <Form formType={props.form} data={props.defaultData} onSubmit={handleSubmit} actionText="Add"/>
+                </>
+            }
         </>
     );
 }
