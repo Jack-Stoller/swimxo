@@ -83,12 +83,14 @@ class BrowseOptions extends Component {
     render() {
         return (
             <>
-                <Search placeholder="Search Everywhere..." />
+                <Search placeholder="Search Everywhere... (NOT WORKING YET)" />
                 <h3>Or view all...</h3>
-                <SectionLink to="/browse/families">Families</SectionLink>
-                <SectionLink to="/browse/students">Students</SectionLink>
-                <SectionLink to="/browse/parents">Parents</SectionLink>
-                <SectionLink to="/browse/classes">Classes</SectionLink>
+                <div className="browse-locations">
+                    <SectionLink to="/browse/families">Families</SectionLink>
+                    <SectionLink to="/browse/students">Students</SectionLink>
+                    <SectionLink to="/browse/parents">Parents</SectionLink>
+                    <SectionLink to="/browse/classes">Classes</SectionLink>
+                </div>
             </>
         );
     }

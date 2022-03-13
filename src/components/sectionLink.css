@@ -22,6 +22,11 @@ section.section-link:hover {
     cursor: pointer;
 }
 
+section.section-link a {
+    color: inherit;
+    text-decoration: none;
+}
+
 section.section-link > svg {
     stroke: grey !important;
     justify-self: end;

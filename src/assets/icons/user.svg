@@ -1,0 +1,24 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    fillRule="evenodd"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeMiterlimit="1.5"
+    clipRule="evenodd"
+    viewBox="0 0 512 512"
+>
+    <circle
+    cx="238.5"
+    cy="206.5"
+    r="97.5"
+    fill="none"
+    strokeWidth="24.28"
+    transform="translate(17.5 -43.75)"
+    ></circle>
+    <path
+    fill="none"
+    strokeWidth="14.56"
+    d="M141 206.5c0-53.812 43.688-97.5 97.5-97.5s97.5 43.688 97.5 97.5"
+    transform="matrix(1.89744 0 0 1.4 -196.538 157.65)"
+    ></path>
+</svg>

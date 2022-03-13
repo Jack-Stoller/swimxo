@@ -10,6 +10,7 @@ import ClassForm from "../components/forms/class";
 import FamilyForm from "../components/forms/family";
 import ParentForm from "../components/forms/parent";
 import StudentForm from "../components/forms/student";
+import Me from "../components/me";
 import ClassView from "../components/view/class";
 import FamilyView from "../components/view/family";
 import ParentView from "../components/view/parent";
@@ -26,6 +27,7 @@ function Portal() {
                 <section className="content-scroll-wrapper">
                     <section className="content">
                         <Routes>
+                            <Route path="/me/*" element={<Me />}></Route>
                             <Route path="/browse/*" element={<Browse />}></Route>
                             <Route path="/contact/*" element={<h1>Contact</h1>}></Route>
                             <Route path="/schedule/*" element={<h1>Schedule</h1>}></Route>

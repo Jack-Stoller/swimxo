@@ -9,7 +9,6 @@ import './App.css';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-
 import TimeAgo from 'javascript-time-ago'
 
 import en from 'javascript-time-ago/locale/en.json'
@@ -23,13 +22,12 @@ TimeAgo.addDefaultLocale(en)
 const auth = firebase.auth();
 
 
-function App() {
+const App = () => {
+    const [user] = useAuthState(auth);
 
     useEffect(() => {
-        document.title = 'SwimXO'
-    }, [])
-
-    const [user] = useAuthState(auth);
+        console.log(user);
+    }, [user]);
 
     return (
         <div className="App">
