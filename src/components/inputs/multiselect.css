@@ -1,0 +1,35 @@
+.mutliselect-wrapper {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #eceaf0;
+    border-radius: 15px;
+    padding: 8px;
+    margin: 12px 0px;
+}
+
+.mutliselect-wrapper .multiselect-option {
+    flex: 1;
+    border-radius: 15px;
+    padding: 8px 16px;
+    text-align: center;
+
+    user-select: none;
+
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.mutliselect-wrapper .multiselect-option:not(:first-child) {
+    margin-left: 8px;
+
+}
+
+.mutliselect-wrapper .multiselect-option:hover {
+    cursor: pointer;
+}
+
+
+.mutliselect-wrapper .multiselect-option.active {
+    background-color: #3F00FF;
+    color: white;
+}

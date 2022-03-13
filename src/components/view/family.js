@@ -32,7 +32,7 @@ const FamilyView = (props) => {
     const [showAddStudent, setShowAddStudent] = useState(false);
 
     const [showAddParent, setShowAddParent] = useState(false);
-    
+
     const [data, loading] = useDocumentData(
         (id || props.id) ? firebase.firestore().doc('/families/' + (props.id ?? id)) : null
     );
@@ -94,6 +94,9 @@ const FamilyView = (props) => {
         if (!data) return;
 
         if (data.students) {
+
+            setStudents(new Array(data.students.length));
+
             for (let i = 0; i < data.students.length; i++) {
                 if (!(data?.students?.[i])) continue;
 
@@ -206,7 +209,7 @@ const FamilyView = (props) => {
                         :
                         <>
                             <h2>Add a transaction {data?.lastname && ('for ' + data.lastname)}</h2>
-                            
+
                             <form onSubmit={addTransaction}>
                                 <TransactionForm />
 

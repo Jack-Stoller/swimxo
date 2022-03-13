@@ -12,15 +12,13 @@
     cy="139"
     r="110"
     fill="none"
-    stroke="#000"
-    strokeWidth="11.28"
-    transform="translate(-75.095 -26.561) scale(1.3297)"
+    strokeWidth="19.36"
+    transform="translate(-65.597 -18.455) scale(1.29155)"
     ></circle>
     <path
     fill="none"
-    stroke="#000"
-    strokeWidth="15.95"
+    strokeWidth="27.37"
     d="M339 127v340"
-    transform="rotate(-45 476.577 265.996) scale(.94024)"
+    transform="scale(.91327) rotate(-45 520.596 277.216)"
     ></path>
 </svg>

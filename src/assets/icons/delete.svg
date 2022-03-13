@@ -9,42 +9,36 @@
 >
     <path
     fill="none"
-    stroke="#fff"
     strokeWidth="27.98"
     d="M88.065 100.511l19.959 322.968c0 24.02 21.365 43.521 47.682 43.521h220.001c26.317 0 47.682-19.501 47.682-43.521l16.437-322.968"
     transform="matrix(.85175 0 0 .93318 31.184 31.205)"
     ></path>
     <path
     fill="none"
-    stroke="#fff"
     strokeWidth="89.91"
     d="M441 268.087V90.461c0-109.783-38.38-198.913-85.654-198.913H155.654C108.38-108.452 70-19.322 70 90.461v177.626"
     transform="matrix(.36119 0 0 .15553 163.717 50.304)"
     ></path>
     <path
     fill="none"
-    stroke="#fff"
     strokeWidth="26.23"
     d="M47 92h417"
     transform="matrix(.90408 0 0 1 24.508 0)"
     ></path>
     <path
     fill="none"
-    stroke="#fff"
     strokeWidth="26.81"
     d="M256 125v300"
     transform="matrix(1 0 0 .86 0 50.5)"
     ></path>
     <path
     fill="none"
-    stroke="#fff"
     strokeWidth="26.81"
     d="M173 125l13 292"
     transform="matrix(1 0 0 .86 3 50.5)"
     ></path>
     <path
     fill="none"
-    stroke="#fff"
     strokeWidth="26.81"
     d="M173 125l13 292"
     transform="matrix(-1 0 0 .86 509 50.5)"

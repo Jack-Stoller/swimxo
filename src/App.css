@@ -6,6 +6,11 @@ html, body {
     outline: 5px solid rgba(60, 177, 255, 0.35);
 }
 
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: transparent;
+}
+
 button {
     padding: 24px 48px;
     border: 0px;
@@ -46,6 +51,15 @@ button.icon {
     font-weight: 200;
 }
 
+
+button.icon svg {
+    display: inline;
+    width: 20px;
+    height: 20px;
+    stroke: white;
+    vertical-align: middle;
+}
+
 button.text {
     display: inline;
     width: unset;
@@ -58,8 +72,4 @@ button.text {
     font-size: inherit;
 
     padding: 0px;
-}
-
-svg {
-    margin: 0;
 }

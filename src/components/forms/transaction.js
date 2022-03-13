@@ -15,12 +15,6 @@ const TransactionForm = (props) => {
     const [amount, setAmount] = useState(props.data?.amount ?? 0);
     const [isCharge, setIsCharge] = useState(props.data?.amount ? props.data?.amount <= 0 : true);
 
-    useEffect(() => {
-
-        console.log(amount, isCharge);
-    }, [amount, isCharge])
-
-
     return (
         <>
             <label>Action</label>

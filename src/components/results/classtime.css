@@ -1,0 +1,52 @@
+.class-time {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.class-time-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.class-time-header .cost {
+    margin-top: 12px;
+}
+
+.class-time .name {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0px;
+}
+
+.class-time .student-interaction {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.student-interaction {
+    margin-top: 16px;
+}
+
+.student-interaction h4 {
+    grid-column: 1 / 3;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 12px;
+}
+
+.student-interaction h5 {
+    grid-column: 1 / 3;
+    text-align: center;
+    margin: 0;
+    color: grey;
+    font-weight: normal;
+}
+
+.student-interaction .name {
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.student-interaction > div {
+    margin: 0;
+}

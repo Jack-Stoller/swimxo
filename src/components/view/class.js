@@ -9,7 +9,10 @@ import { ReactComponent as DeleteIcon } from './../../assets/icons/delete.svg';
 import './class.css'
 import './view.css';
 import Popup from '../popup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import ClsasTimeForm from '../forms/classtime';
+import { getFormData } from '../../utils/form';
+import ClassTimeResult from '../results/classtime';
 
 const ClassView = (props) => {
 
@@ -17,10 +20,42 @@ const ClassView = (props) => {
     const nav = useNavigate();
 
     const [promptDelete, setPromptDelete] = useState(false);
+    const [showingList, setShowingList] = useState(null);
+    const [studentList, setStudentList] = useState(null);
+    const [showAddTime, setShowAddTime] = useState(false);
+    const [addingTime, setAddingTime] = useState(false);
 
     const [data, loading] = useDocumentData(
         (id || props.id) ? firebase.firestore().doc('/classes/' + (props.id ?? id)) : null
     );
+
+    useEffect(() => {
+
+        if (data && showingList) {
+            let studentRefs = data.times?.[showingList.time].student_info?.[showingList.prop];
+
+            if (!studentRefs) return;
+
+            setStudentList([...Array(studentRefs.length)]);
+
+            studentRefs.forEach((ref, i) => {
+                firebase.firestore()
+                    .collection(ref.parent.id)
+                    .doc(ref.id)
+                    .onSnapshot(snap => {
+                        let studentListArray = studentList ?? [];
+                        studentListArray.splice(i, 1, {
+                            ...snap.data(),
+                            id: ref.id
+                        });
+
+                        setStudentList([...studentListArray]);
+                    });
+            })
+        } else {
+            setStudentList(null);
+        }
+    }, [data, showingList]);
 
     const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','??'];
     const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat','??'];
@@ -42,6 +77,37 @@ const ClassView = (props) => {
 
         nav('/browse/classes');
     }
+
+    const addTime = async(e) => {
+        e.preventDefault();
+
+        setAddingTime(true);
+
+        const [tData] = getFormData(e, firebase.firestore());
+        const auth = await firebase.auth();
+
+        //Join dates
+        let start = new Date(`${tData.startDate.getFullYear()}-${tData.startDate.getMonth() + 1}-${tData.startDate.getDate()} ${tData.startTime}:00`)
+        let end = new Date(`${tData.endDate.getFullYear()}-${tData.endDate.getMonth() + 1}-${tData.endDate.getDate()} ${tData.endTime}:00`)
+
+        delete tData.startDate;
+        delete tData.endDate;
+
+        await firebase.firestore().doc('/classes/' + (props.id ?? id)).update({
+            times: firebase.firestore.FieldValue.arrayUnion({
+                ...tData,
+                start: start,
+                end: end,
+                date: new Date(), /* Use client bc arrays and firestore don't work */
+                user: auth.currentUser.displayName,
+                user_id: auth.currentUser.uid
+            })
+        }).then((ref) => {
+            setAddingTime(false);
+            setShowAddTime(false);
+        });
+    }
+
 
     const capFirstLetter = (word) => {
         return word.substring(0, 1).toUpperCase() + word.substring(1, word.length).toLowerCase();
@@ -66,8 +132,7 @@ const ClassView = (props) => {
                     <button onClick={() => { deleteClass() }}>Yes</button>
                 </div>
             </Popup>
-            :
-            ''
+            : ''
         }
             <header className="view-header">
                 <h1>Class {data && (data.name ?? '?')}</h1>
@@ -83,65 +148,56 @@ const ClassView = (props) => {
 
             <div>{data && (data.description ?? '??')}</div>
 
-            <h2 className="view-section-heading">Times</h2>
-            <div className="class-times">
+            {
+                (studentList) ?
 
-                <button>Add Time</button>
+                <Popup onClose={() => {setShowingList(null)}}>
+                    {
+                        (studentList ?? []).map((s, i) =>
+                            <div key={i}>{s?.name}</div>
+                        )
+                    }
+                </Popup>
 
-                {data && (data.times ?? []).map((t, i) => {
-                    let start = t.start?.toDate();
-                    let end =  t.end?.toDate();
+                : ''
+            }
 
-                    return (
-                        <div className="card class-time" key={[t, i]}>
-                            <div>
-                                <h2 className="name">
-                                    {t.name ?? 'Unknown'}
-                                </h2>
-                                <div className="cost">
-                                    {formatter.format(t.cost ?? 0)}
-                                </div>
-                            </div>
-                            <div>
-                                <div className="date">
-                                    {mon[start?.getMonth() ?? 12]} {start?.getDate()} {start?.getFullYear()}
-                                    &nbsp;to&nbsp;
-                                    {mon[end?.getMonth() ?? 12]} {end?.getDate()} {end?.getFullYear()}
-                                </div>
-                                <div className="time">
-                                    {
-                                        (start && end) ?
-                                            `${start.getHours()}:${start.getMinutes().toString().padStart(2, '0')} to ${end.getHours()}:${end.getMinutes().toString().padStart(2, '0')}`
-                                        :
-                                            'Unknown'
-                                    }
-                                </div>
-                                <div className="days">
-                                    {(t.days ?? []).map(d => days[d]).join(', ')}
-                                </div>
-                            </div>
-                            <div className="view-table">
-                                {
-                                    (t?.student_info) ?
-                                        Object.keys(t.student_info).map(k => 
-                                            <div key={k}>
-                                                <div className="name">{capFirstLetter(k)}</div>
-                                                <div className="value">{t.student_info[k].length}</div>
-                                            </div>
-                                        )
-                                    : ''
-                                }
-                                {
-                                    (!t?.student_info || t.student_info === {}) ?
-                                    <h3>No student interaction yet</h3>
-                                    : ''
-                                }
-                            </div>
-                        </div>
-                    )
-                })}
+            {
+                (showAddTime) ?
+
+                <Popup onClose={() => {setShowAddTime(false)}}>
+
+                    {
+                        (addingTime) ?
+                        <Loading />
+                        :
+                        <>
+                            <h2>Add Time</h2>
+
+                            <form onSubmit={addTime}>
+
+                                <ClsasTimeForm />
+
+                                <button>Add</button>
+
+                            </form>
+                        </>
+                    }
+                </Popup>
+
+                : ''
+            }
+
+            <div className="action-heading">
+                <h2 className="view-section-heading">Times</h2>
+                <button className="icon" onClick={() => {setShowAddTime(true)}}>+</button>
             </div>
-            
+            <div className="class-times">
+                {data && (data.times ?? []).map((t, i) =>
+                    <ClassTimeResult key={[t, i]} data={t} />
+                )}
+            </div>
+
 
             <h2 className="view-section-heading">Skills</h2>
             <div className="class-skills">
@@ -157,8 +213,7 @@ const ClassView = (props) => {
                 {
                     data && ((data.skills ?? []).length === 0) ?
                     <h2 style={{textAlign: 'center'}}>No Skills</h2>
-                   :
-                   ''
+                   : ''
                 }
             </div>
 

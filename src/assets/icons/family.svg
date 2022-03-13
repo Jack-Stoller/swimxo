@@ -1,0 +1,54 @@
+<svg
+    xmlns="http://www.w3.org/2000/svg"
+    fillRule="evenodd"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeMiterlimit="1.5"
+    clipRule="evenodd"
+    viewBox="0 0 512 512"
+>
+    <circle
+    cx="238.5"
+    cy="206.5"
+    r="97.5"
+    fill="none"
+    strokeWidth="50.73"
+    transform="translate(-15 -61.774) matrix(.4928 0 0 .4928 138.469 108.286)"
+    ></circle>
+    <path
+    fill="none"
+    strokeWidth="32.38"
+    d="M155.741 154.958C172.97 127.37 203.606 109 238.5 109c13.296 0 25.975 2.667 37.528 7.496"
+    transform="translate(-15 -61.774) matrix(.93504 0 0 .5641 32.993 233.513)"
+    ></path>
+    <circle
+    cx="238.5"
+    cy="206.5"
+    r="97.5"
+    fill="none"
+    strokeWidth="49.65"
+    transform="translate(-29 -62.656) matrix(.50352 0 0 .50352 17.061 155.163)"
+    ></circle>
+    <path
+    fill="none"
+    strokeWidth="31.69"
+    d="M141 206.5c0-53.812 43.688-97.5 97.5-97.5s97.5 43.688 97.5 97.5"
+    transform="translate(-29 -62.656) matrix(.9554 0 0 .57639 -90.712 283.117)"
+    ></path>
+    <g>
+    <circle
+        cx="238.5"
+        cy="206.5"
+        r="97.5"
+        fill="none"
+        strokeWidth="38.6"
+        transform="translate(1.354 -61.774) matrix(.6477 0 0 .6477 221.348 155.854)"
+    ></circle>
+    <path
+        fill="none"
+        strokeWidth="24.63"
+        d="M141 206.5c0-53.812 43.688-97.5 97.5-97.5s97.5 43.688 97.5 97.5"
+        transform="translate(1.354 -61.774) matrix(1.22895 0 0 .74142 82.718 320.444)"
+    ></path>
+    </g>
+</svg>

@@ -14,6 +14,7 @@ const AddEventForm = (props) => {
 
     const [defaultClassSnap] = useDocumentDataOnce(props.data?.class.withConverter(idConverter) ?? null);
     const [action, setAction] = useState(props.data?.action ?? 'enrolled');
+    const [shouldCharge, setShouldCharge] = useState(props.data?.shouldCharge ?? false);
 
     const [pickingClass, setPickingClass] = useState(false);
     const [selClass, setSelClass] = useState(null);
@@ -30,6 +31,15 @@ const AddEventForm = (props) => {
         setSelClass(data);
         setPickingClass(false);
     }
+
+    const formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+
+        // These options are needed to round to whole numbers if that's what you want.
+        //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+        //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+    });
 
     return (
         <>
@@ -57,7 +67,7 @@ const AddEventForm = (props) => {
             />
 
             <input type="hidden" name="time" data-type="int" value={selClass?.index ?? -1} onChange={() => {}} />
-            <input type="hidden" name="name" value={selClass?.class.name ?? '?'} onChange={() => {}} />
+            <input type="hidden" name="name" value={selClass?.class?.name ?? '?'} onChange={() => {}} />
 
 
             {
@@ -108,15 +118,38 @@ const AddEventForm = (props) => {
                             value: "placed"
                         }
                     ]}
-                    initialSelectedIndex={[true, false].indexOf(props.data?.action ?? 0)}
+                    initialSelectedIndex={["enrolled", "waitlist", "completed", "promoted", "placed"].indexOf(action)}
                     onChange={setAction}
                     backgroundColor="#eceaf0"
                     selectedBackgroundColor="#3F00FF"
                 />
                 <input type="hidden" name="action" value={action} />
-
-
             </div>
+
+            <label>Charge {selClass ? <strong>{formatter.format(selClass.cost)}</strong> : ''} for class?</label>
+            <div className="input-sized">
+                <SwitchSelector
+                    options={[
+                        {
+                            label: "Yes",
+                            value: true
+                        },
+                        {
+                            label: "No",
+                            value: false
+                        }
+                    ]}
+                    initialSelectedIndex={[true, false].indexOf(shouldCharge)}
+                    onChange={setShouldCharge}
+                    backgroundColor="#eceaf0"
+                    selectedBackgroundColor="#3F00FF"
+                />
+                <input type="hidden" data-type="bool" name="shouldCharge" value={shouldCharge} />
+            </div>
+
+            <input type="hidden" data-type="number" name="classCost" value={selClass?.cost ?? ''} />
+            <input type="hidden" name="className" value={selClass?.class?.name ?? ''} />
+            <input type="hidden" name="timeName" value={selClass?.name ?? ''} />
 
             <label htmlFor="note">Notes</label>
             <textarea name="note" defaultValue={props.data?.note ?? ''} placeholder="Notes"></textarea>

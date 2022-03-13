@@ -41,7 +41,7 @@ const StudentView = (props) => {
 
     const [age, setAge] = useState(null);
     const [brithday, setBrithday] = useState(null);
-    const [curClass, setCurClass] = useState('');
+    const [curClass, setCurClass] = useState({});
     const [historyClasses, setHistoryClasses] = useState([]);
 
     useEffect(() => {
@@ -63,9 +63,9 @@ const StudentView = (props) => {
         setCurClass(
             (data.history) ? data.history.reduce((a, b) =>
                 a.date.seconds < b.date.seconds ? a : b
-            ).name
+            )
             :
-            'no class yet'
+            null
         );
 
         let classes = [];
@@ -123,12 +123,32 @@ const StudentView = (props) => {
 
         setSubmittingAddHistory(true);
 
-        const [data, refUpdates] = getFormData(e, firebase.firestore());
+        const [eData, refUpdates] = getFormData(e, firebase.firestore());
         const auth = await firebase.auth();
+
+        console.log(eData);
+
+        if (eData.shouldCharge) {
+            await firebase.firestore().doc('/families/' + fData.id).update({
+                transactions: firebase.firestore.FieldValue.arrayUnion({
+                    amount: eData.classCost,
+                    note: `Charged for "${eData.action}" for ${data.name} in class ${eData.className} at ${eData.timeName}.`,
+                    date: new Date(), /* Use client bc arrays and firestore don't work */
+                    user: auth.currentUser.displayName,
+                    user_id: auth.currentUser.uid
+                })
+            });
+        }
+
+        delete eData.shouldCharge;
+        delete eData.classCost;
+        delete eData.className;
+        delete eData.timeName;
+
 
         await firebase.firestore().doc('/students/' + (props.id ?? id)).update({
             history: firebase.firestore.FieldValue.arrayUnion({
-                ...data,
+                ...eData,
                 date: new Date(), /* Use client bc arrays and firestore don't work */
                 user: auth.currentUser.displayName,
                 user_id: auth.currentUser.uid
@@ -155,6 +175,7 @@ const StudentView = (props) => {
             setShowingAddHistory(false);
         });
     }
+
 
 
     return (
@@ -211,7 +232,7 @@ const StudentView = (props) => {
                 </div>
                 <div>
                     <div className="name">Class</div>
-                    <div className="value">in {curClass ?? ''}</div>
+                    <div className="value">in {(curClass) ? <Link to={'/class/' + curClass?.class?.id}>{curClass?.name ?? ''}</Link> : 'no class yet'}</div>
                 </div>
             </div>
 

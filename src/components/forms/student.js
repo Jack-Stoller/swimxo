@@ -22,6 +22,7 @@ const StudentForm = (props) => {
         setFamily(defaultFamilySnap);
     }, [defaultFamilySnap, props])
 
+    console.log(props.data);
 
     const pickFamily = (data) => {
         setFamily(data);
@@ -76,7 +77,7 @@ const StudentForm = (props) => {
             <input type="text" name="name" defaultValue={props.data?.name ?? ''} placeholder="Name" required />
 
             <label htmlFor="birthday">Birthday</label>
-            <input type="date" name="birthday" defaultValue={(props.data?.birthday?.toDate()) ? `${props.data?.birthday?.toDate().getFullYear()}-${props.data?.birthday?.toDate().getMonth() + 1}-${props.data?.birthday?.toDate().getDate()}` : ''} required />
+            <input type="date" name="birthday" defaultValue={(props.data?.birthday?.toDate()) ? `${props.data?.birthday?.toDate().getFullYear()}-${(props.data?.birthday?.toDate().getMonth() + 1).toString().padStart(2, '0')}-${props.data?.birthday?.toDate().getDate().toString().padStart(2, '0')}` : ''} required />
             <div className="input-sized">
                 <SwitchSelector
                     options={[

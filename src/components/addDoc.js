@@ -52,8 +52,6 @@ const AddDoc = (props) => {
         });
     }
 
-    console.log(props);
-
     return (
         <>
             {
