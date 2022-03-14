@@ -86,6 +86,10 @@ const FamilyView = (props) => {
     }
 
 
+    //Use this to unsub from firestore events
+    const [unsubs, setUnsubs] = useState([]);
+    useEffect(() => () => unsubs.forEach(u => u()), []);
+
     const [students, setStudents] = useState([]);
     const [parents, setParents] = useState([]);
 
@@ -100,7 +104,7 @@ const FamilyView = (props) => {
             for (let i = 0; i < data.students.length; i++) {
                 if (!(data?.students?.[i])) continue;
 
-                firebase.firestore()
+                let unsub = firebase.firestore()
                     .collection(data.students[i].parent.id)
                     .doc(data.students[i].id)
                     .onSnapshot(snap => {
@@ -111,6 +115,8 @@ const FamilyView = (props) => {
 
                         setStudents([...students]);
                     });
+                
+                setUnsubs([...unsubs, unsub]);
             }
         }
 
@@ -118,7 +124,7 @@ const FamilyView = (props) => {
             for (let i = 0; i < data.parents.length; i++) {
                 if (!(data?.parents?.[i])) continue;
 
-                firebase.firestore()
+                let unsub = firebase.firestore()
                     .collection(data.parents[i].parent.id)
                     .doc(data.parents[i].id)
                     .onSnapshot(snap => {
@@ -126,9 +132,10 @@ const FamilyView = (props) => {
                             ...snap.data(),
                             id: data.parents[i].id
                         });
-
+                        
                         setParents([...parents]);
                     });
+                setUnsubs([...unsubs, unsub]);
             }
         }
     }, [data]);

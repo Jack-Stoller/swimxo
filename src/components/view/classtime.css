@@ -1,0 +1,22 @@
+.category {
+    margin: 16px 0px;
+}
+
+.category .category-name {
+    margin-bottom: 24px;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+.category .category-students .category-student {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    
+    margin: 12px 0px;
+}
+
+.category .category-students .category-student .actions {
+    text-align: end;
+    color: #3500d3;
+    font-size: 14px;
+}

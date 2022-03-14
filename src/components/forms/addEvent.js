@@ -6,7 +6,6 @@ import BrowseCollection from '../browse/collection';
 import Popup from '../popup';
 import ClassTimeResult from '../results/classtime';
 import SectionLink from '../sectionLink';
-import ClassResult from './../results/class';
 
 import './forms.css';
 
@@ -19,12 +18,27 @@ const AddEventForm = (props) => {
     const [pickingClass, setPickingClass] = useState(false);
     const [selClass, setSelClass] = useState(null);
 
+    const fromLastAction = {
+        waitlist: ['enrolled', 'moved'],
+        moved: ['enrolled', 'moved'],
+        enrolled: ['complete', 'moved', 'unenrolled'],
+        complete: ['waitlist', 'enroll', 'moved'],
+        unenrolled: ['waitlist', 'enrolled', 'moved'],
+        _: ['waitlist', 'enrolled']
+    }
+
 
     useEffect(() => {
         if (defaultClassSnap)
             setSelClass(defaultClassSnap);
 
-    }, [defaultClassSnap, props])
+    }, [defaultClassSnap, props]);
+
+    const capFirstLetter = (word) => {
+        return word.substring(0, 1).toUpperCase() + word.substring(1, word.length).toLowerCase();
+    }
+
+    console.log(props?.lastAction, (fromLastAction[props?.lastAction || null] ?? []) );
 
 
     const pickClass = (data) => {
@@ -96,29 +110,8 @@ const AddEventForm = (props) => {
             <label>Action</label>
             <div className="input-sized">
                 <SwitchSelector
-                    options={[
-                        {
-                            label: "Enrolled",
-                            value: "enrolled"
-                        },
-                        {
-                            label: "Waitlist",
-                            value: "waitlist"
-                        },
-                        {
-                            label: "Completed",
-                            value: "completed"
-                        },
-                        {
-                            label: "Promoted",
-                            value: "promoted"
-                        },
-                        {
-                            label: "Placed",
-                            value: "placed"
-                        }
-                    ]}
-                    initialSelectedIndex={["enrolled", "waitlist", "completed", "promoted", "placed"].indexOf(action)}
+                    options={(fromLastAction[props?.lastAction] ?? props?.lastAction._).map(a => ({label: capFirstLetter(a), value: a}))}
+                    initialSelectedIndex={(fromLastAction[props?.lastAction] ?? props?.lastAction._).indexOf(action)}
                     onChange={setAction}
                     backgroundColor="#eceaf0"
                     selectedBackgroundColor="#3F00FF"

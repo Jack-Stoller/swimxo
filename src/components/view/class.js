@@ -19,6 +19,11 @@ const ClassView = (props) => {
     let { id } = useParams();
     const nav = useNavigate();
 
+    
+    //Use this to unsub from firestore events
+    const [unsubs, setUnsubs] = useState([]);
+    useEffect(() => () => unsubs.forEach(u => u()), []);
+
     const [promptDelete, setPromptDelete] = useState(false);
     const [showingList, setShowingList] = useState(null);
     const [studentList, setStudentList] = useState(null);
@@ -39,7 +44,7 @@ const ClassView = (props) => {
             setStudentList([...Array(studentRefs.length)]);
 
             studentRefs.forEach((ref, i) => {
-                firebase.firestore()
+                let unsub = firebase.firestore()
                     .collection(ref.parent.id)
                     .doc(ref.id)
                     .onSnapshot(snap => {
@@ -51,6 +56,7 @@ const ClassView = (props) => {
 
                         setStudentList([...studentListArray]);
                     });
+                setUnsubs([...unsubs, unsub]);
             })
         } else {
             setStudentList(null);

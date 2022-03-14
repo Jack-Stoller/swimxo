@@ -38,6 +38,10 @@ const StudentView = (props) => {
     const [showingAddHistory, setShowingAddHistory] = useState(false);
     const [submittingAddHistory, setSubmittingAddHistory] = useState(false);
 
+    
+    //Use this to unsub from firestore events
+    const [unsubs, setUnsubs] = useState([]);
+    useEffect(() => () => unsubs.forEach(u => u()), []);
 
     const [age, setAge] = useState(null);
     const [brithday, setBrithday] = useState(null);
@@ -75,7 +79,7 @@ const StudentView = (props) => {
             for (let i = 0; i < data.history.length; i++) {
                 if (!(data?.history?.[i].class?.id)) continue;
 
-                firebase.firestore()
+                let unsub = firebase.firestore()
                     .collection(data.history[i].class.parent.id)
                     .doc(data.history[i].class.id)
                     .onSnapshot(snap => {
@@ -87,6 +91,7 @@ const StudentView = (props) => {
                         setHistoryClasses([...historyClasses]);
                     });
 
+                setUnsubs([...unsubs, unsub]);
                 classes.push({});
             }
 
@@ -125,8 +130,6 @@ const StudentView = (props) => {
 
         const [eData, refUpdates] = getFormData(e, firebase.firestore());
         const auth = await firebase.auth();
-
-        console.log(eData);
 
         if (eData.shouldCharge) {
             await firebase.firestore().doc('/families/' + fData.id).update({
@@ -248,7 +251,7 @@ const StudentView = (props) => {
 
                                 <form style={{position: 'relative'}} onSubmit={addEvent}>
 
-                                    <AddEventForm />
+                                    <AddEventForm lastAction={(data?.history ?? []).sort((a, b) => (b.date?.seconds ?? 0) - (a.date?.seconds ?? 0))[0].action} />
 
                                     <button>Add</button>
 

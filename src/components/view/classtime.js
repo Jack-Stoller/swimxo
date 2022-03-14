@@ -18,17 +18,22 @@ const ClassTimeView = (props) => {
     const nav = useNavigate();
 
     const [promptDelete, setPromptDelete] = useState(false);
-    const [showingList, setShowingList] = useState(null);
-    const [studentList, setStudentList] = useState(null);
-    const [showAddTime, setShowAddTime] = useState(false);
-    const [addingTime, setAddingTime] = useState(false);
+    
+    const quickActions = {
+        enrolled: ['completed']
+    }
+
+    //Use this to unsub from firestore events
+    const [unsubs, setUnsubs] = useState([]);
+    useEffect(() => () => unsubs.forEach(u => u()), []);
 
     const [data, setData] = useState(null);
     const [start, setStart] = useState(null);
     const [end, setEnd] = useState(null);
-
+    const [students, setStudents] = useState({});
+    
     useEffect(() => {
-        firebase.firestore()
+        let unsub = firebase.firestore()
             .collection('/classes/')
             .doc(props.id ?? id)
             .onSnapshot(snap => {
@@ -39,8 +44,11 @@ const ClassTimeView = (props) => {
                         id: snap.id
                     }
                 });
-            })
+            });
+
+        setUnsubs([...unsubs, unsub]);
     }, [id, index, props]);
+
 
     useEffect(() => {
         if (!data) return;
@@ -49,35 +57,28 @@ const ClassTimeView = (props) => {
             setStart(data.start.toDate());
         if (data.end)
             setEnd(data.end?.toDate());
-    }, [data]);
 
-    useEffect(() => {
-
-        if (data && showingList) {
-            let studentRefs = data.times?.[showingList.time].student_info?.[showingList.prop];
-
-            if (!studentRefs) return;
-
-            setStudentList([...Array(studentRefs.length)]);
-
-            studentRefs.forEach((ref, i) => {
-                firebase.firestore()
+        Object.keys(data.student_info ?? {}).forEach(k => {
+            data.student_info[k].forEach((ref, i) => {
+                let unsub = firebase.firestore()
                     .collection(ref.parent.id)
                     .doc(ref.id)
                     .onSnapshot(snap => {
-                        let studentListArray = studentList ?? [];
-                        studentListArray.splice(i, 1, {
+                        let studentsArray = students[k] ?? [];
+                        studentsArray.splice(i, 1, {
                             ...snap.data(),
                             id: ref.id
                         });
 
-                        setStudentList([...studentListArray]);
+                        students[k] = studentsArray;
+
+                        setStudents({...students});
                     });
-            })
-        } else {
-            setStudentList(null);
-        }
-    }, [data, showingList]);
+
+                setUnsubs([...unsubs, unsub]);
+            });
+        })
+    }, [data]);
 
     const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','??'];
     const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat','??'];
@@ -177,9 +178,20 @@ const ClassTimeView = (props) => {
                     Object.keys(data?.student_info)
                         .sort((a, b) => a.localeCompare(b))
                         .map(k =>
-                            <div key={k}>
-                                <div className="name">{capFirstLetter(k)}</div>
-                                <div className="value">{data?.student_info[k].length}</div>
+                            <div key={k} className="category card">
+                                <div className="category-name">{capFirstLetter(k)} ({data?.student_info[k].length})</div>
+                                <div className="category-students">
+                                    {
+                                        (students[k] ?? []).map(stu => 
+                                            <div className="category-student">
+                                                <div className="name">{stu?.name ?? '?'}</div>
+                                                <div className="actions">
+                                                    <button className="text">Remove</button>
+                                                </div>
+                                            </div>
+                                        )
+                                    }
+                                </div>
                             </div>
                         )
                 : ''
