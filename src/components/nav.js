@@ -24,12 +24,6 @@ const Nav = () => {
     return (
         <nav>
             <ul>
-                <li className={curPage === 5 ? 'active' : ''}>
-                    <Link to="/me" onClick={() => {setCurPage(5)}}>
-                        <UserIcon />
-                        <span>{user.displayName}</span>
-                    </Link>
-                </li>
                 <li className={curPage === 0 ? 'active' : ''}>
                     <Link to="/" onClick={() => {setCurPage(0)}}>
                         <DashboardIcon />
@@ -58,6 +52,12 @@ const Nav = () => {
                     <Link to="/browse/classes" onClick={() => {setCurPage(4)}}>
                         <ClassIcon />
                         <span>Classes</span>
+                    </Link>
+                </li>
+                <li className={curPage === 5 ? 'active' : ''}>
+                    <Link to="/me" onClick={() => {setCurPage(5)}}>
+                        <UserIcon />
+                        <span>{user.displayName}</span>
                     </Link>
                 </li>
             </ul>

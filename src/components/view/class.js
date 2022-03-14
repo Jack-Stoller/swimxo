@@ -194,7 +194,7 @@ const ClassView = (props) => {
             </div>
             <div className="class-times">
                 {data && (data.times ?? []).map((t, i) =>
-                    <ClassTimeResult key={[t, i]} data={t} />
+                    <ClassTimeResult key={[t, i]} data={t} onClick={() => {nav(i.toString())}} />
                 )}
             </div>
 

@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 import AddDoc from "../components/addDoc";
 import Browse from '../components/browse';
+import Dashboard from "../components/dashboard";
 import EditDoc from "../components/editDoc";
 import ClassForm from "../components/forms/class";
 import FamilyForm from "../components/forms/family";
@@ -12,6 +13,7 @@ import ParentForm from "../components/forms/parent";
 import StudentForm from "../components/forms/student";
 import Me from "../components/me";
 import ClassView from "../components/view/class";
+import ClassTimeView from "../components/view/classtime";
 import FamilyView from "../components/view/family";
 import ParentView from "../components/view/parent";
 import StudentView from "../components/view/student";
@@ -29,9 +31,6 @@ function Portal() {
                         <Routes>
                             <Route path="/me/*" element={<Me />}></Route>
                             <Route path="/browse/*" element={<Browse />}></Route>
-                            <Route path="/contact/*" element={<h1>Contact</h1>}></Route>
-                            <Route path="/schedule/*" element={<h1>Schedule</h1>}></Route>
-                            <Route path="/settings/*" element={<h1>Settings</h1>}></Route>
 
                             <Route path="/add/class" element={
                                 <AddDoc
@@ -99,6 +98,9 @@ function Portal() {
                             <Route path="/class/:id" element={
                                 <ClassView />
                             } />
+                            <Route path="/class/:id/:index" element={
+                                <ClassTimeView />
+                            } />
                             <Route path="/family/:id" element={
                                 <FamilyView />
                             } />
@@ -109,7 +111,7 @@ function Portal() {
                                 <StudentView />
                             } />
 
-                            <Route path="/" element={<h1>Overview</h1>}></Route>
+                            <Route path="/" element={<Dashboard />}></Route>
                         </Routes>
                     </section>
                 </section>
