@@ -9,6 +9,7 @@ import { ReactComponent as ClassIcon } from './../assets/icons/class.svg';
 import { ReactComponent as UserIcon } from './../assets/icons/user.svg';
 import { ReactComponent as ContactIcon } from './../assets/icons/contact.svg';
 import { ReactComponent as ScheduleIcon } from './../assets/icons/schedule.svg';
+import landscapeWhiteLogoWithName from './../assets/logo/icon-and-name-landscape-white.png';
 
 import './nav.css';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -23,6 +24,7 @@ const Nav = () => {
 
     return (
         <nav>
+            <img src={landscapeWhiteLogoWithName} />
             <ul>
                 <li className={curPage === 0 ? 'active' : ''}>
                     <Link to="/" onClick={() => {setCurPage(0)}}>

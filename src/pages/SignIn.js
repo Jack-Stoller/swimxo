@@ -1,6 +1,8 @@
 
 import firebase from 'firebase/compat/app';
 import './SignIn.css'
+import logoWithName from './../assets/logo/icon-and-name.png';
+
 
 const auth = firebase.auth();
 
@@ -13,10 +15,9 @@ function SignIn() {
 
     return (
         <section className="card sign-in-prompt">
-            <h1>
-                SwimXO
-            </h1>
-            <h2>Login</h2>
+            <header>
+                <img src={logoWithName} />
+            </header>
             <button onClick={signInWithGoogle}>Sign in with Google</button>
         </section>
     );
