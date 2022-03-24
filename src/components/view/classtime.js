@@ -18,7 +18,7 @@ const ClassTimeView = (props) => {
     const nav = useNavigate();
 
     const [promptDelete, setPromptDelete] = useState(false);
-    
+
     const quickActions = {
         enrolled: ['completed']
     }
@@ -31,7 +31,7 @@ const ClassTimeView = (props) => {
     const [start, setStart] = useState(null);
     const [end, setEnd] = useState(null);
     const [students, setStudents] = useState({});
-    
+
     useEffect(() => {
         let unsub = firebase.firestore()
             .collection('/classes/')
@@ -182,12 +182,9 @@ const ClassTimeView = (props) => {
                                 <div className="category-name">{capFirstLetter(k)} ({data?.student_info[k].length})</div>
                                 <div className="category-students">
                                     {
-                                        (students[k] ?? []).map(stu => 
-                                            <div className="category-student">
-                                                <div className="name">{stu?.name ?? '?'}</div>
-                                                <div className="actions">
-                                                    <button className="text">Remove</button>
-                                                </div>
+                                        (students[k] ?? []).map((stu, i) =>
+                                            <div key={k + stu?.id.toString() + i} className="category-student">
+                                                <Link to={`/student/${stu?.id}`}>{stu?.name ?? '?'}</Link>
                                             </div>
                                         )
                                     }

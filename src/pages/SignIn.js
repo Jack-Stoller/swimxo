@@ -14,11 +14,13 @@ function SignIn() {
     }
 
     return (
-        <section className="card sign-in-prompt">
-            <header>
-                <img src={logoWithName} />
-            </header>
-            <button onClick={signInWithGoogle}>Sign in with Google</button>
+        <section className="signin-wrapper">
+            <section className="card signin-prompt">
+                <header>
+                    <img src={logoWithName} />
+                </header>
+                <button onClick={signInWithGoogle}>Sign in with Google</button>
+            </section>
         </section>
     );
 }

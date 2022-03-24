@@ -6,11 +6,33 @@
 }
 
 .transaction {
+    position: relative;
     display: grid;
     grid-template-columns: 15% 10% 20% 55%;
     padding: 16px 32px;
 }
 
+.transaction:not(:last-child):after {
+    position: absolute;
+    content: "";
+    display: block;
+    bottom: 0;
+    left: 5%;
+    width: 90%;
+    height: 1px;
+    background-color: rgb(233, 233, 233);
+}
+
 .transaction .date {
     color: grey;
+}
+
+@media screen and (max-width: 750px) {
+    .transaction {
+        grid-template-columns: 30% 25% 35%;
+    }
+
+    .transaction .desc {
+        grid-column: 1 / 4;
+    }
 }

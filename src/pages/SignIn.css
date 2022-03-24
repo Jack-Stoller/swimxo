@@ -1,34 +1,41 @@
-.sign-in-prompt {
+.signin-wrapper {
+
+    height: 100vh;
+    width: 100vw;
+
+    display: grid;
+    align-items: center;
+    justify-content: center;
+}
+
+.signin-prompt {
     width: 500px;
     max-width: 100vw;
     box-sizing: border-box;
-
-    margin: auto;
-    margin-top: 30vh;
 }
 
-.sign-in-prompt header {
+.signin-prompt header {
     width: 100%;
     height: 250px;
     text-align: center;
 }
 
-.sign-in-prompt header img {
+.signin-prompt header img {
     display: inline-block;
     height: 100%;
 }
 
-.sign-in-prompt h2 {
+.signin-prompt h2 {
     color: grey;
 }
 
-.sign-in-prompt button {
+.signin-prompt button {
     width: 100%;
     margin-top: 64px;
 }
 
 @media screen and (max-width: 550px) {
-    .sign-in-prompt {
+    .signin-prompt {
         width: 100vw;
         height: 100vh;
         border-radius: 0;

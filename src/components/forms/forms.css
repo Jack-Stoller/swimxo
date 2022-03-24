@@ -27,6 +27,7 @@ form > *:is(input, textarea, select), .form-input {
     resize: none;
 
     will-change: outline;
+    -webkit-appearance: none;
 
     transition: outline 0.2s;
 }

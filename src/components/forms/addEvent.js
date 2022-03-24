@@ -25,7 +25,7 @@ const AddEventForm = (props) => {
         complete: ['waitlist', 'enroll', 'moved'],
         unenrolled: ['waitlist', 'enrolled', 'moved'],
         _: ['waitlist', 'enrolled']
-    }
+    };
 
 
     useEffect(() => {

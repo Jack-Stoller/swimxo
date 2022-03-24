@@ -38,6 +38,10 @@ h3 {
 @media screen and (max-width: 750px) {
     section.app {
         grid-template-columns: 1fr;
-        grid-template-rows: 1fr 50px;
+        grid-template-rows: 1fr 75px;
+    }
+
+    section.content {
+        width: 90%;
     }
 }

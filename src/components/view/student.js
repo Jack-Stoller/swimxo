@@ -38,7 +38,7 @@ const StudentView = (props) => {
     const [showingAddHistory, setShowingAddHistory] = useState(false);
     const [submittingAddHistory, setSubmittingAddHistory] = useState(false);
 
-    
+
     //Use this to unsub from firestore events
     const [unsubs, setUnsubs] = useState([]);
     useEffect(() => () => unsubs.forEach(u => u()), []);
@@ -166,7 +166,12 @@ const StudentView = (props) => {
                     if (!d.times[index].student_info)
                         d.times[index].student_info = {};
 
-                    d.times[index].student_info[prop] = [...(d.times?.[index]?.student_info?.[prop] ?? []), firebase.firestore().doc('/students/' + (props.id ?? id))];
+                    if (!d.times[index].student_info[prop])
+                        d.times[index].student_info[prop] = {current: [], history: []}
+
+                    d.times[index].student_info[prop].current = [...(d.times?.[index]?.student_info?.[prop] ?? []), firebase.firestore().doc('/students/' + (props.id ?? id))];
+
+                    //Move 
 
                     u.doc.update({
                         times: d.times

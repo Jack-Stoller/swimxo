@@ -8,10 +8,12 @@
     font-size: 28px;
 }
 
-.category .category-students .category-student {
+.category .category-students {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.category .category-student {
     margin: 12px 0px;
 }
 

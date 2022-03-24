@@ -24,6 +24,7 @@
     outline: 0px solid transparent;
 
     will-change: outline;
+    -webkit-appearance: none;
 
     transition: outline 0.2s;
 }
