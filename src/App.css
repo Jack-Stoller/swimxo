@@ -2,6 +2,10 @@ html, body {
     margin: 0px;
 }
 
+.App {
+    height: 100vh;
+}
+
 *:focus {
     outline: 5px solid rgba(60, 177, 255, 0.35);
 }

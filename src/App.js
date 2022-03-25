@@ -4,6 +4,7 @@ import 'firebase/compat/auth';
 
 import Portal from './pages/Portal';
 import SignIn from './pages/SignIn';
+import Loading from './components/loading';
 import './App.css';
 
 
@@ -23,7 +24,7 @@ const auth = firebase.auth();
 
 
 const App = () => {
-    const [user] = useAuthState(auth);
+    const [user, loading] = useAuthState(auth);
 
     useEffect(() => {
         console.log(user);
@@ -31,7 +32,7 @@ const App = () => {
 
     return (
         <div className="App">
-            {user ? <Portal /> : <SignIn />}
+            {loading ? <Loading /> : user ? <Portal /> : <SignIn />}
         </div>
     );
 }
