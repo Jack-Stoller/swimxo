@@ -51,3 +51,27 @@
 .popup > .actions > button {
     margin-left: 16px;
 }
+
+.popup > .popup-x {
+    position: absolute;
+    color: grey;
+    top: 20px;
+    right: 20px;
+}
+
+.popup > .popup-x > svg {
+    height: 16px;
+    width: 16px;
+    stroke: rgb(182, 182, 182);
+    overflow: visible;
+}
+
+.popup > .popup-x:hover {
+    cursor: pointer;
+}
+
+@media screen and (max-width: 750px) {
+    .popup {
+        padding: 24px;
+    }
+}

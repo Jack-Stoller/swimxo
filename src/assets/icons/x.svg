@@ -1,0 +1,22 @@
+ <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fillRule="evenodd"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    strokeMiterlimit="1.5"
+    clipRule="evenodd"
+    viewBox="0 0 512 512"
+>
+    <path
+    fill="none"
+    strokeWidth="50"
+    d="M88 300L279 96"
+    transform="matrix(1.46853 -.43617 -.53389 1.50045 92.235 38.948)"
+    ></path>
+    <path
+    fill="none"
+    strokeWidth="50"
+    d="M88 300L279 96"
+    transform="matrix(.43617 1.46853 -1.50045 -.53389 473.052 92.235)"
+    ></path>
+</svg>
