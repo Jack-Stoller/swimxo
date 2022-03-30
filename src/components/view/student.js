@@ -256,7 +256,7 @@ const StudentView = (props) => {
 
                                 <form style={{position: 'relative'}} onSubmit={addEvent}>
 
-                                    <AddEventForm lastAction={(data?.history ?? []).sort((a, b) => (b.date?.seconds ?? 0) - (a.date?.seconds ?? 0))[0].action} />
+                                    <AddEventForm lastAction={(data?.history ?? []).sort((a, b) => (b.date?.seconds ?? 0) - (a.date?.seconds ?? 0))?.[0]?.action} />
 
                                     <button>Add</button>
 

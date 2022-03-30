@@ -38,8 +38,6 @@ const AddEventForm = (props) => {
         return word.substring(0, 1).toUpperCase() + word.substring(1, word.length).toLowerCase();
     }
 
-    console.log(props?.lastAction, (fromLastAction[props?.lastAction || null] ?? []) );
-
 
     const pickClass = (data) => {
         setSelClass(data);
@@ -110,8 +108,8 @@ const AddEventForm = (props) => {
             <label>Action</label>
             <div className="input-sized">
                 <SwitchSelector
-                    options={(fromLastAction[props?.lastAction] ?? props?.lastAction._).map(a => ({label: capFirstLetter(a), value: a}))}
-                    initialSelectedIndex={(fromLastAction[props?.lastAction] ?? props?.lastAction._).indexOf(action)}
+                    options={(fromLastAction[props?.lastAction] ?? fromLastAction._).map(a => ({label: capFirstLetter(a), value: a}))}
+                    initialSelectedIndex={(fromLastAction[props?.lastAction] ?? fromLastAction._).indexOf(action)}
                     onChange={setAction}
                     backgroundColor="#eceaf0"
                     selectedBackgroundColor="#3F00FF"
